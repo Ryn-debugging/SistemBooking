@@ -394,9 +394,9 @@ textarea:focus {
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  padding: 5px;
+  width: 42px;
+  height: 42px;
+  padding: 3px;
   border-radius: 11px;
   background: #FFFFFF;
   color: var(--color-primary);
