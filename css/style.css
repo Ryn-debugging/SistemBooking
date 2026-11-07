@@ -394,21 +394,30 @@ textarea:focus {
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
+  padding: 5px;
   border-radius: 11px;
-  background: var(--color-primary);
-  color: var(--color-secondary);
+  background: #FFFFFF;
+  color: var(--color-primary);
   font-size: 1rem;
   font-weight: 800;
-  border: 1px solid rgba(214, 169, 107, 0.35);
-  box-shadow: 0 4px 12px rgba(23, 44, 53, 0.16);
+  border: 1px solid rgba(23, 44, 53, 0.12);
+  box-shadow: 0 4px 12px rgba(23, 44, 53, 0.12);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .site-header--navy .brand-mark {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--color-secondary);
-  border-color: rgba(214, 169, 107, 0.5);
+  background: #FFFFFF;
+  border-color: rgba(214, 169, 107, 0.45);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
 }
 
 .site-nav {

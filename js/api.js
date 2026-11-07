@@ -1,7 +1,7 @@
 (function (global) {
   "use strict";
 
-  var PRODUCT_NAME = "NamaProduk";
+  var PRODUCT_NAME = "BookingYukk!";
   var DATA_KEY = "namaproduk_demo_data_v1";
   var SESSION_KEY = "namaproduk_demo_session_v1";
   var DAY_MS = 24 * 60 * 60 * 1000;
