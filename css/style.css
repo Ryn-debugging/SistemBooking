@@ -394,10 +394,10 @@ textarea:focus {
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
-  padding: 3px;
-  border-radius: 11px;
+  width: 48px;
+  height: 38px;
+  padding: 3px 4px;
+  border-radius: 10px;
   background: #FFFFFF;
   color: var(--color-primary);
   font-size: 1rem;
