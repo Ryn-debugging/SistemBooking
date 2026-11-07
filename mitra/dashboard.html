@@ -3,53 +3,319 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Dashboard manajemen mitra NamaProduk untuk memantau statistik booking, pendapatan, jadwal harian, pelanggan, dan layanan.">
   <title>Dashboard Mitra — NamaProduk</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/dashboard.css">
 </head>
-<body>
-  <header class="site-header"><div class="container header-inner"><a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true">N</span><span data-product-name>NamaProduk</span></a><div class="header-actions"><span class="mitra-name" id="header-mitra-name"></span><button class="button button-secondary button-small" id="logout-button" type="button">Keluar</button></div></div></header>
-  <main class="container dashboard-main">
-    <div id="dashboard-error" class="notice notice-error" role="alert" hidden></div>
-    <section class="dashboard-title"><div><p class="eyebrow">Dashboard mitra</p><h1 id="dashboard-business-name">Ringkasan usaha</h1><p>Kelola booking, jadwal, dan layanan usaha kamu.</p></div><a class="text-link" id="public-booking-link" href="../index.html" target="_blank" rel="noopener noreferrer">Lihat halaman booking</a></section>
-    <section class="stats-grid" aria-label="Ringkasan hari ini">
-      <article class="stat-card"><span>Booking hari ini</span><strong id="stat-bookings">—</strong></article>
-      <article class="stat-card"><span>Menunggu konfirmasi</span><strong id="stat-pending">—</strong></article>
-      <article class="stat-card"><span>Slot kosong hari ini</span><strong id="stat-available">—</strong></article>
-    </section>
-    <nav class="dashboard-tabs" aria-label="Bagian dashboard">
-      <button class="tab-button is-active" type="button" data-tab="bookings" aria-selected="true">Booking</button>
-      <button class="tab-button" type="button" data-tab="schedule" aria-selected="false">Jadwal</button>
-      <button class="tab-button" type="button" data-tab="services" aria-selected="false">Layanan</button>
-    </nav>
-    <section class="dashboard-panel" id="panel-bookings" aria-labelledby="tab-bookings">
-      <div class="panel-heading"><div><h2>Booking</h2><p>Periksa dan perbarui status booking pelanggan.</p></div><div class="panel-filters"><label for="booking-date">Tanggal</label><input id="booking-date" type="date"><label class="visually-hidden" for="booking-status">Filter status booking</label><select id="booking-status"><option value="semua">Semua status</option><option value="menunggu">Menunggu</option><option value="diterima">Diterima</option><option value="dibatalkan">Dibatalkan</option></select></div></div>
-      <div id="booking-list" class="booking-list"></div>
-    </section>
-    <section class="dashboard-panel" id="panel-schedule" hidden>
-      <div class="panel-heading"><div><h2>Jadwal harian</h2><p>Tutup atau buka slot 30 menit. Jam yang memiliki booking tidak dapat ditutup.</p></div><div class="panel-filters"><label for="schedule-date">Tanggal</label><input id="schedule-date" type="date"></div></div>
-      <div class="schedule-legend"><span><i class="legend-dot legend-available"></i>Kosong</span><span><i class="legend-dot legend-full"></i>Terisi</span><span><i class="legend-dot legend-pending"></i>Ditutup</span></div>
-      <div id="schedule-grid" class="schedule-grid"></div>
-    </section>
-    <section class="dashboard-panel" id="panel-services" hidden>
-      <div class="panel-heading"><div><h2>Layanan</h2><p>Atur layanan yang tersedia di halaman booking publik.</p></div><button class="button button-primary button-small" id="add-service-button" type="button">Tambah layanan</button></div>
-      <div id="service-list" class="service-admin-list"></div>
-    </section>
-  </main>
+<body class="dashboard-body">
+  <div class="admin-shell">
+    <!-- Responsive Modern Sidebar -->
+    <aside class="admin-sidebar" id="admin-sidebar" aria-label="Navigasi dashboard">
+      <div class="sidebar-top">
+        <div class="sidebar-brand-row">
+          <a class="brand" href="../index.html">
+            <span class="brand-mark" aria-hidden="true">N</span>
+            <span data-product-name>NamaProduk</span>
+          </a>
+          <button type="button" class="sidebar-close-btn" id="sidebar-close-btn" aria-label="Tutup menu">×</button>
+        </div>
+
+        <div>
+          <div class="sidebar-section-label">Menu Utama</div>
+          <nav class="sidebar-nav" aria-label="Bagian dashboard">
+            <button class="tab-button is-active" type="button" data-tab="overview" aria-selected="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+              <span>Dashboard Overview</span>
+            </button>
+
+            <button class="tab-button" type="button" data-tab="bookings" aria-selected="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+              <span>Manajemen Booking</span>
+              <span class="tab-badge-count" id="nav-badge-bookings">0</span>
+            </button>
+
+            <button class="tab-button" type="button" data-tab="schedule" aria-selected="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <span>Jadwal Harian</span>
+            </button>
+
+            <button class="tab-button" type="button" data-tab="customers" aria-selected="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+              <span>Pelanggan</span>
+              <span class="tab-badge-count" id="nav-badge-customers">0</span>
+            </button>
+
+            <button class="tab-button" type="button" data-tab="services" aria-selected="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
+              <span>Layanan &amp; Harga</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-mitra-card">
+          <div class="sidebar-avatar" id="sidebar-avatar" aria-hidden="true">M</div>
+          <div class="sidebar-mitra-meta">
+            <strong id="header-mitra-name">Mitra Usaha</strong>
+            <span>Akun Mitra Aktif</span>
+          </div>
+        </div>
+        <button class="button button-ghost-light button-small button-full" id="logout-button" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Keluar Sesi
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebar-overlay" hidden></div>
+
+    <!-- Main Dashboard Column -->
+    <div class="admin-content-wrap">
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button type="button" class="sidebar-toggle-btn" id="sidebar-toggle-btn" aria-label="Buka navigasi sidebar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+          <div class="topbar-title-group">
+            <span>Dashboard Mitra</span>
+            <h1 id="dashboard-business-name">Ringkasan Usaha</h1>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <a class="button button-secondary button-small" id="public-booking-link" href="../index.html" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+            <span>Lihat Halaman Publik</span>
+          </a>
+        </div>
+      </header>
+
+      <main class="dashboard-main">
+        <div id="dashboard-error" class="notice notice-error" role="alert" hidden></div>
+
+        <!-- KPI Statistics Cards -->
+        <section class="stats-grid" aria-label="Statistik utama usaha">
+          <article class="stat-card">
+            <div class="stat-card-head">
+              <span>Total Booking</span>
+              <div class="stat-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              </div>
+            </div>
+            <div>
+              <strong id="stat-total-bookings">—</strong>
+              <span class="stat-subtext"><strong id="stat-bookings" style="display:inline; font-size:inherit;">0</strong> jadwal hari ini</span>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-card-head">
+              <span>Estimasi Pendapatan</span>
+              <div class="stat-icon stat-icon--gold" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              </div>
+            </div>
+            <div>
+              <strong id="stat-revenue">—</strong>
+              <span class="stat-subtext">Dari booking aktif &amp; diterima</span>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-card-head">
+              <span>Menunggu Konfirmasi</span>
+              <div class="stat-icon stat-icon--gold" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              </div>
+            </div>
+            <div>
+              <strong id="stat-pending">—</strong>
+              <span class="stat-subtext">Perlu ditinjau hari ini</span>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-card-head">
+              <span>Slot Kosong Hari Ini</span>
+              <div class="stat-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              </div>
+            </div>
+            <div>
+              <strong id="stat-available">—</strong>
+              <span class="stat-subtext">Slot 30 menit siap dipesan</span>
+            </div>
+          </article>
+        </section>
+
+        <!-- PANEL 1: DASHBOARD OVERVIEW -->
+        <section class="dashboard-view" id="panel-overview">
+          <div class="overview-grid">
+            <div class="dashboard-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Grafik Tren Booking (7 Hari)</h2>
+                  <p>Distribusi volume reservasi 3 hari terakhir hingga 3 hari ke depan.</p>
+                </div>
+              </div>
+              <div class="chart-bars-wrap" id="analytics-chart" aria-label="Grafik jumlah booking 7 hari"></div>
+            </div>
+
+            <div class="dashboard-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Rasio Status Reservasi</h2>
+                  <p>Ringkasan seluruh booking yang masuk.</p>
+                </div>
+              </div>
+              <div class="status-dist-list" id="status-distribution"></div>
+            </div>
+          </div>
+
+          <div class="dashboard-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Booking Terbaru</h2>
+                <p>Daftar reservasi terkini yang membutuhkan perhatian atau akan datang.</p>
+              </div>
+              <button type="button" class="button button-secondary button-small" id="goto-all-bookings">
+                Kelola Semua Booking
+              </button>
+            </div>
+            <div id="recent-booking-list" class="booking-list"></div>
+          </div>
+        </section>
+
+        <!-- PANEL 2: MANAJEMEN BOOKING -->
+        <section class="dashboard-panel dashboard-view" id="panel-bookings" hidden>
+          <div class="panel-heading">
+            <div>
+              <h2>Tabel Manajemen Booking</h2>
+              <p>Periksa rincian pemesan, konfirmasi jadwal, atau hubungi pelanggan melalui WhatsApp.</p>
+            </div>
+            <div class="panel-filters">
+              <button type="button" class="filter-chip-toggle" id="booking-all-dates">Semua Tanggal</button>
+              <label for="booking-date">Tanggal</label>
+              <input id="booking-date" type="date">
+              <label class="visually-hidden" for="booking-status">Filter status booking</label>
+              <select id="booking-status">
+                <option value="semua">Semua status</option>
+                <option value="menunggu">Menunggu</option>
+                <option value="diterima">Diterima</option>
+                <option value="dibatalkan">Dibatalkan</option>
+              </select>
+              <label class="visually-hidden" for="booking-search">Cari nama atau kode</label>
+              <input id="booking-search" type="search" placeholder="Cari nama / kode…">
+            </div>
+          </div>
+          <div class="data-table-header" aria-hidden="true">
+            <span>Pelanggan &amp; Kode</span>
+            <span>Layanan &amp; Jadwal</span>
+            <span>Status</span>
+            <span style="text-align: right;">Tindakan</span>
+          </div>
+          <div id="booking-list" class="booking-list"></div>
+        </section>
+
+        <!-- PANEL 3: MANAJEMEN JADWAL HARIAN -->
+        <section class="dashboard-panel dashboard-view" id="panel-schedule" hidden>
+          <div class="panel-heading">
+            <div>
+              <h2>Pengaturan Jadwal Harian</h2>
+              <p>Tutup atau buka slot waktu 30 menit. Slot dengan booking aktif terkunci otomatis agar tidak bentrok.</p>
+            </div>
+            <div class="panel-filters">
+              <label for="schedule-date">Pilih Tanggal</label>
+              <input id="schedule-date" type="date">
+            </div>
+          </div>
+          <div class="schedule-legend">
+            <span><i class="legend-dot legend-available"></i>Kosong (Dapat dipesan)</span>
+            <span><i class="legend-dot legend-full"></i>Terisi / Lewat</span>
+            <span><i class="legend-dot legend-pending"></i>Ditutup sementara</span>
+          </div>
+          <div id="schedule-grid" class="schedule-grid"></div>
+        </section>
+
+        <!-- PANEL 4: MANAJEMEN PELANGGAN -->
+        <section class="dashboard-panel dashboard-view" id="panel-customers" hidden>
+          <div class="panel-heading">
+            <div>
+              <h2>Direktori Pelanggan</h2>
+              <p>Daftar pelanggan yang pernah melakukan reservasi beserta riwayat kunjungan dan kontak WhatsApp.</p>
+            </div>
+            <div class="panel-filters">
+              <label class="visually-hidden" for="customer-search">Cari pelanggan</label>
+              <input id="customer-search" type="search" placeholder="Cari nama atau nomor HP…">
+            </div>
+          </div>
+          <div class="data-table-header" style="grid-template-columns: 1.3fr 0.9fr 1fr auto;" aria-hidden="true">
+            <span>Nama &amp; Kontak</span>
+            <span>Total Reservasi</span>
+            <span>Kunjungan Terakhir</span>
+            <span style="text-align: right;">Komunikasi</span>
+          </div>
+          <div id="customer-list" class="customer-list"></div>
+        </section>
+
+        <!-- PANEL 5: MANAJEMEN LAYANAN -->
+        <section class="dashboard-panel dashboard-view" id="panel-services" hidden>
+          <div class="panel-heading">
+            <div>
+              <h2>Katalog Layanan &amp; Harga</h2>
+              <p>Atur daftar layanan, durasi pengerjaan, dan tarif yang tampil di halaman booking publik.</p>
+            </div>
+            <button class="button button-primary button-small" id="add-service-button" type="button">
+              + Tambah Layanan
+            </button>
+          </div>
+          <div id="service-list" class="service-admin-list"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal Tambah / Ubah Layanan -->
   <dialog id="service-dialog" class="service-dialog">
     <form id="service-form" method="dialog">
-      <div class="dialog-heading"><h2 id="service-dialog-title">Tambah layanan</h2><button type="button" class="icon-button" id="close-service-dialog" aria-label="Tutup">×</button></div>
+      <div class="dialog-heading">
+        <h2 id="service-dialog-title">Tambah Layanan</h2>
+        <button type="button" class="icon-button" id="close-service-dialog" aria-label="Tutup">×</button>
+      </div>
       <input type="hidden" id="service-id">
-      <label for="service-name">Nama layanan</label><input id="service-name" maxlength="80" required>
-      <label for="service-duration">Durasi (menit)</label><input id="service-duration" type="number" min="30" step="30" required>
-      <label for="service-price">Harga (Rupiah)</label><input id="service-price" type="number" min="0" step="1000" required>
+
+      <div>
+        <label for="service-name">Nama Layanan</label>
+        <input id="service-name" maxlength="80" placeholder="Contoh: Potong + Cuci Rambut" required>
+      </div>
+
+      <div>
+        <label for="service-duration">Durasi Pengerjaan (menit, kelipatan 30)</label>
+        <input id="service-duration" type="number" min="30" step="30" placeholder="Contoh: 30 atau 60" required>
+      </div>
+
+      <div>
+        <label for="service-price">Harga Layanan (Rupiah)</label>
+        <input id="service-price" type="number" min="0" step="1000" placeholder="Contoh: 45000" required>
+      </div>
+
       <div id="service-form-error" class="field-error" role="alert" hidden></div>
-      <div class="dialog-actions"><button class="button button-secondary" type="button" id="cancel-service">Batal</button><button class="button button-primary" type="submit">Simpan layanan</button></div>
+
+      <div class="dialog-actions">
+        <button class="button button-secondary" type="button" id="cancel-service">Batal</button>
+        <button class="button button-primary" type="submit">Simpan Layanan</button>
+      </div>
     </form>
   </dialog>
-  <script src="../js/api.js"></script><script src="../js/utils.js"></script><script src="../js/dashboard.js"></script>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/dashboard.js"></script>
 </body>
 </html>

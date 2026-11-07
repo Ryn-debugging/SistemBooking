@@ -3,55 +3,501 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Pesan layanan usaha lokal dengan mudah melalui NamaProduk.">
-  <title>NamaProduk — Booking usaha lokal</title>
+  <meta name="description" content="Pesan layanan usaha lokal terpilih dengan jadwal real-time, harga transparan, dan konfirmasi instan melalui NamaProduk.">
+  <title>NamaProduk — Platform Booking Layanan Lokal Modern</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header site-header--navy" id="site-header">
     <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="NamaProduk, beranda"><span class="brand-mark" aria-hidden="true">N</span><span data-product-name>NamaProduk</span></a>
-      <a class="button button-secondary button-small" href="mitra/login.html">Masuk sebagai mitra</a>
+      <a class="brand" href="index.html" aria-label="NamaProduk, beranda">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span data-product-name>NamaProduk</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Navigasi utama">
+        <a href="#beranda" class="is-active">Beranda</a>
+        <a href="#populer">Layanan Populer</a>
+        <a href="#mitra">Cari &amp; Listing</a>
+        <a href="#keunggulan">Keunggulan</a>
+        <a href="#testimoni">Testimoni</a>
+      </nav>
+
+      <div class="header-actions header-actions--desktop">
+        <a class="button button-ghost-light button-small" href="mitra/login.html" id="nav-mitra-login">Masuk Mitra</a>
+        <a class="button button-gold button-small" href="#mitra" id="nav-book-cta">Booking Sekarang</a>
+      </div>
+
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" type="button" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobile-nav">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="mobile-nav" id="mobile-nav" hidden>
+      <div class="mobile-nav-links">
+        <a href="#beranda">Beranda</a>
+        <a href="#populer">Layanan Populer</a>
+        <a href="#mitra">Cari &amp; Listing Mitra</a>
+        <a href="#keunggulan">Mengapa Kami</a>
+        <a href="#testimoni">Ulasan Pelanggan</a>
+      </div>
+      <div class="mobile-nav-actions">
+        <a class="button button-ghost-light button-small" href="mitra/login.html">Masuk Mitra</a>
+        <a class="button button-gold button-small" href="#mitra">Booking Sekarang</a>
+      </div>
     </div>
   </header>
-  <main class="container landing-main">
-    <section class="hero">
-      <p class="eyebrow">Booking lebih praktis</p>
-      <h1>Temukan waktu yang pas untuk layanan lokal pilihanmu.</h1>
-      <p class="hero-copy">Pilih layanan, lihat jadwal yang tersedia, dan buat janji langsung tanpa perlu membuat akun.</p>
-      <a class="button button-primary" href="#mitra">Jelajahi mitra demo</a>
+
+  <main id="beranda">
+    <!-- Hero Section -->
+    <section class="hero-banner">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <p class="hero-kicker">Reservasi Layanan Terkurasi</p>
+          <h1>Jadwalkan layanan lokal favoritmu tanpa antre dan tanpa ribet.</h1>
+          <p class="hero-copy">
+            Bandingkan layanan terbaik di kotamu, pantau ketersediaan jam secara real-time, dan amankan jadwal dalam hitungan detik—langsung tanpa perlu membuat akun.
+          </p>
+          <div class="hero-cta-row">
+            <a class="button button-gold" href="#mitra" id="hero-primary-cta">
+              Jelajahi Mitra Pilihan
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="button button-ghost-light" href="#populer" id="hero-secondary-cta">Lihat Layanan Populer</a>
+          </div>
+          <div class="hero-metrics" aria-label="Statistik layanan">
+            <div class="hero-metric">
+              <strong>4.9 / 5</strong>
+              <span>Rata-rata kepuasan pelanggan</span>
+            </div>
+            <div class="hero-metric">
+              <strong>Real-Time</strong>
+              <span>Ketersediaan slot terverifikasi</span>
+            </div>
+            <div class="hero-metric">
+              <strong>Rp 0</strong>
+              <span>Bebas biaya layanan tambahan</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-image-frame">
+            <img src="assets/images/hero-studio.jpg" alt="Interior studio layanan modern dan nyaman" fetchpriority="high">
+          </div>
+          <div class="hero-floating-card">
+            <div>
+              <strong>Konfirmasi Instan &amp; Kode Booking Resmi</strong>
+              <span>Terhubung langsung ke WhatsApp mitra pilihanmu</span>
+            </div>
+            <span class="hero-floating-badge">Tanpa Akun</span>
+          </div>
+        </div>
+      </div>
     </section>
-    <section class="benefits" aria-label="Manfaat NamaProduk">
-      <article class="benefit-card"><span class="benefit-number">01</span><h2>Jadwal jelas</h2><p>Pelanggan dapat melihat waktu yang tersedia sebelum memesan.</p></article>
-      <article class="benefit-card"><span class="benefit-number">02</span><h2>Pesan tanpa akun</h2><p>Alur pemesanan singkat, cukup isi nama dan nomor WhatsApp.</p></article>
-      <article class="benefit-card"><span class="benefit-number">03</span><h2>Kelola dari satu tempat</h2><p>Mitra dapat mengatur booking, layanan, dan jam operasional.</p></article>
+
+    <!-- Prominent Search Booking Dock (Inspired by Reference Image 1) -->
+    <section class="container search-dock-wrap" aria-label="Pencarian cepat jadwal layanan">
+      <div class="search-dock">
+        <div class="search-category-tabs" role="tablist" aria-label="Kategori layanan">
+          <div class="category-tab-group">
+            <button type="button" class="category-pill-tab is-active" role="tab" aria-selected="true" data-hero-cat="">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+              Semua Layanan
+            </button>
+            <button type="button" class="category-pill-tab" role="tab" aria-selected="false" data-hero-cat="Barbershop">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"/></svg>
+              Barbershop
+            </button>
+            <button type="button" class="category-pill-tab" role="tab" aria-selected="false" data-hero-cat="Salon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
+              Salon &amp; Hair Spa
+            </button>
+            <button type="button" class="category-pill-tab" role="tab" aria-selected="false" data-hero-cat="Laundry">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="2" width="18" height="20" rx="2"/><circle cx="12" cy="13" r="5"/><path d="M7 6h.01M11 6h.01"/></svg>
+              Laundry &amp; Garment
+            </button>
+          </div>
+          <span class="search-dock-meta">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Mitra lokal Bandung terverifikasi
+          </span>
+        </div>
+
+        <form class="search-dock-form" id="hero-search-form">
+          <div class="search-box-field">
+            <label class="search-box-label" for="hero-search-query">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              Layanan atau Lokasi
+            </label>
+            <input id="hero-search-query" type="search" placeholder="Cukur, Creambath, Laundry…">
+          </div>
+
+          <div class="search-box-field">
+            <label class="search-box-label" for="hero-search-category">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
+              Kategori Usaha
+            </label>
+            <select id="hero-search-category">
+              <option value="">Semua Kategori</option>
+              <option value="Barbershop">Barbershop</option>
+              <option value="Salon">Salon</option>
+              <option value="Laundry">Laundry</option>
+            </select>
+          </div>
+
+          <div class="search-box-field">
+            <label class="search-box-label" for="hero-search-date">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              Tanggal Rencana
+            </label>
+            <input id="hero-search-date" type="date">
+          </div>
+
+          <div class="search-box-field">
+            <label class="search-box-label" for="hero-search-budget">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              Estimasi Budget
+            </label>
+            <select id="hero-search-budget">
+              <option value="100000">Semua Harga</option>
+              <option value="25000">Mulai ≤ Rp 25.000</option>
+              <option value="40000">Mulai ≤ Rp 40.000</option>
+              <option value="60000">Mulai ≤ Rp 60.000</option>
+            </select>
+          </div>
+
+          <button class="button button-primary search-submit-btn" type="submit" id="hero-search-submit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            Cari Jadwal
+          </button>
+        </form>
+      </div>
     </section>
-    <section class="partners-section" id="mitra">
-      <div class="section-heading"><div><p class="eyebrow">Coba prototipe</p><h2>Mitra demo</h2></div><p>Pilih usaha untuk melihat halaman booking-nya.</p></div>
-      <div class="partner-grid" id="partner-list" aria-live="polite"><p class="muted">Memuat mitra…</p></div>
+
+    <!-- Featured Section -->
+    <section class="container page-section" id="populer" aria-labelledby="featured-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Rekomendasi Pilihan</p>
+          <h2 id="featured-heading">Tempat &amp; Layanan Terpopuler Minggu Ini</h2>
+        </div>
+        <p>Dipilih berdasarkan ulasan pelanggan tertinggi, konsistensi pelayanan, dan kemudahan konfirmasi jadwal.</p>
+      </div>
+      <div class="featured-grid" id="featured-list" aria-live="polite">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
     </section>
-    <p class="demo-note">Prototipe ini menggunakan data demo yang tersimpan di browser.</p>
+
+    <!-- Search & Listing Explorer Section (Inspired by Reference Image 1) -->
+    <section class="container page-section" id="mitra" aria-labelledby="explorer-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Direktori &amp; Pencarian Mitra</p>
+          <h2 id="explorer-heading">Temukan &amp; Bandingkan Layanan Terbaik</h2>
+        </div>
+        <p>Gunakan filter kategori, anggaran harga, dan pengurutan untuk menemukan mitra yang paling sesuai kebutuhanmu.</p>
+      </div>
+
+      <div class="explorer-layout">
+        <!-- Sidebar Filters -->
+        <aside class="filter-sidebar" aria-label="Filter pencarian mitra">
+          <div class="filter-sidebar-header">
+            <h3>Filter Hasil</h3>
+            <button type="button" class="reset-filter-btn" id="reset-filters">Reset Filter</button>
+          </div>
+
+          <div class="filter-card">
+            <div class="filter-card-title">
+              <span>Anggaran Layanan</span>
+            </div>
+            <div class="budget-display">
+              <span>Rentang harga mulai</span>
+              <strong id="budget-range-value">Semua Harga (Hingga Rp 100.000+)</strong>
+            </div>
+            <label class="visually-hidden" for="filter-price-range">Batas harga mulai layanan</label>
+            <input type="range" class="budget-slider" id="filter-price-range" min="5000" max="100000" step="5000" value="100000">
+          </div>
+
+          <div class="filter-card">
+            <div class="filter-card-title">
+              <span>Kategori Usaha</span>
+            </div>
+            <div class="filter-check-list" id="category-filter-list"></div>
+          </div>
+
+          <div class="filter-card">
+            <div class="filter-card-title">
+              <span>Filter Populer</span>
+            </div>
+            <div class="filter-check-list">
+              <label class="filter-check-item">
+                <span class="filter-check-left">
+                  <input type="checkbox" id="filter-open-early">
+                  <span>Buka Pagi (≤ 09:00)</span>
+                </span>
+                <span class="filter-count" id="count-open-early">0</span>
+              </label>
+              <label class="filter-check-item">
+                <span class="filter-check-left">
+                  <input type="checkbox" id="filter-fast-service">
+                  <span>Durasi Cepat (30 mnt)</span>
+                </span>
+                <span class="filter-count" id="count-fast-service">0</span>
+              </label>
+              <label class="filter-check-item">
+                <span class="filter-check-left">
+                  <input type="checkbox" id="filter-budget-friendly">
+                  <span>Ekonomis (≤ Rp 30rb)</span>
+                </span>
+                <span class="filter-count" id="count-budget-friendly">0</span>
+              </label>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Listing Results -->
+        <div class="listing-results-col">
+          <div class="listing-toolbar">
+            <div class="listing-result-info">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              <span id="listing-result-count">Memuat daftar mitra…</span>
+            </div>
+
+            <div class="listing-sort-wrap">
+              <label class="visually-hidden" for="listing-search-input">Cari cepat nama mitra</label>
+              <input id="listing-search-input" type="search" placeholder="Filter kata kunci…" style="min-height: 40px; max-width: 190px; padding: 7px 12px; font-size: 0.86rem;">
+              <label for="listing-sort">Urutkan:</label>
+              <select id="listing-sort">
+                <option value="recommended">Rekomendasi Populer</option>
+                <option value="price-asc">Harga Terendah</option>
+                <option value="price-desc">Harga Tertinggi</option>
+                <option value="rating-desc">Rating Tertinggi</option>
+                <option value="name-asc">Nama (A–Z)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="partner-grid" id="partner-list" aria-live="polite">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="container page-section" id="keunggulan" aria-labelledby="why-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Mengapa Memilih Kami</p>
+          <h2 id="why-heading">Standar Baru Reservasi Usaha Lokal</h2>
+        </div>
+        <p>Dirancang agar pelanggan mendapatkan kepastian jadwal dan mitra dapat melayani lebih optimal.</p>
+      </div>
+
+      <div class="benefits">
+        <article class="benefit-card">
+          <div class="benefit-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"/></svg>
+          </div>
+          <h3>Jadwal Akurat &amp; Real-Time</h3>
+          <p>Setiap slot waktu dihitung otomatis sesuai durasi layanan dan jam operasional mitra sehingga bebas bentrok.</p>
+        </article>
+
+        <article class="benefit-card">
+          <div class="benefit-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <h3>Transparan &amp; Aman</h3>
+          <p>Harga setiap layanan ditampilkan secara jelas di awal tanpa biaya tambahan tersembunyi saat konfirmasi.</p>
+        </article>
+
+        <article class="benefit-card">
+          <div class="benefit-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <h3>Booking Cepat Tanpa Akun</h3>
+          <p>Tidak perlu registrasi panjang atau mengingat kata sandi—cukup isi nama lengkap dan nomor WhatsApp aktif.</p>
+        </article>
+
+        <article class="benefit-card">
+          <div class="benefit-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <h3>Dukungan &amp; Konfirmasi Mudah</h3>
+          <p>Dapatkan kode booking unik serta tombol pesan WhatsApp otomatis untuk terhubung langsung dengan mitra.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="container page-section" id="testimoni" aria-labelledby="testimonial-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Cerita Pelanggan</p>
+          <h2 id="testimonial-heading">Dipercaya Pelanggan Setiap Hari</h2>
+        </div>
+        <p>Pengalaman nyata pelanggan yang memesan jadwal layanan tanpa harus menunggu antrean panjang.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <article class="testimonial-card">
+          <div>
+            <div class="testimonial-stars" aria-label="Rating 5 dari 5 bintang">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="testimonial-quote">
+              “Biasanya akhir pekan harus antre hampir satu jam untuk potong rambut. Sekarang tinggal pilih jam kosong dari rumah, datang tepat waktu, dan langsung dilayani.”
+            </p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">AP</div>
+            <div class="author-meta">
+              <strong>Andi Pratama</strong>
+              <span>Pelanggan Barbershop Rapi · Bandung</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="testimonial-card">
+          <div>
+            <div class="testimonial-stars" aria-label="Rating 5 dari 5 bintang">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="testimonial-quote">
+              “Tampilan jadwalnya rapi dan harganya jelas sejak awal. Saya suka fitur ringkasan kode booking yang langsung terhubung ke WhatsApp Salon Senja.”
+            </p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">MS</div>
+            <div class="author-meta">
+              <strong>Maya Sari</strong>
+              <span>Pelanggan Salon Senja · Bandung</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="testimonial-card">
+          <div>
+            <div class="testimonial-stars" aria-label="Rating 5 dari 5 bintang">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="testimonial-quote">
+              “Sangat praktis untuk pesan slot cuci express sebelum berangkat kerja. Tidak perlu download aplikasi atau bikin akun baru, 30 detik beres.”
+            </p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">RP</div>
+            <div class="author-meta">
+              <strong>Rina Putri</strong>
+              <span>Pelanggan Laundry Bersih · Bandung</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Partner Callout -->
+    <section class="container" aria-label="Portal mitra usaha">
+      <div class="mitra-cta-banner">
+        <div>
+          <p class="hero-kicker" style="margin-bottom: 8px;">Portal Mitra Usaha</p>
+          <h2>Kelola jadwal, layanan, dan pelanggan dari satu dashboard modern.</h2>
+          <p>Pantau booking harian, atur buka-tutup slot operasional, dan kelola katalog layanan secara mandiri menggunakan akun demo mitra yang tersedia.</p>
+        </div>
+        <div class="mitra-cta-actions">
+          <a class="button button-gold" href="mitra/login.html">Masuk Dashboard Mitra</a>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer class="site-footer"><div class="container">© <span id="current-year"></span> <span data-product-name>NamaProduk</span> · Prototipe booking usaha lokal</div></footer>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a class="brand" href="index.html" style="color: #FFFFFF;">
+            <span class="brand-mark" aria-hidden="true">N</span>
+            <span data-product-name>NamaProduk</span>
+          </a>
+          <p class="footer-brand-desc">
+            Platform reservasi layanan usaha lokal modern yang menghubungkan pelanggan dengan jadwal layanan terpercaya secara cepat, rapi, dan transparan.
+          </p>
+          <div class="footer-socials" aria-label="Media sosial">
+            <a href="#beranda" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
+            </a>
+            <a href="#beranda" aria-label="WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+            </a>
+            <a href="#beranda" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigasi Cepat</h4>
+          <ul class="footer-links">
+            <li><a href="#beranda">Beranda</a></li>
+            <li><a href="#populer">Layanan Populer</a></li>
+            <li><a href="#mitra">Eksplorasi Mitra</a></li>
+            <li><a href="#keunggulan">Keunggulan Platform</a></li>
+            <li><a href="#testimoni">Testimoni Pelanggan</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Mitra Pilihan</h4>
+          <ul class="footer-links">
+            <li><a href="booking.html?mitra=barbershop-rapi">Barbershop Rapi</a></li>
+            <li><a href="booking.html?mitra=salon-senja">Salon Senja</a></li>
+            <li><a href="booking.html?mitra=laundry-bersih">Laundry Bersih</a></li>
+            <li><a href="mitra/login.html">Portal Login Mitra</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Kontak &amp; Informasi</h4>
+          <ul class="footer-links">
+            <li>Jl. Asia Afrika No. 88, Bandung</li>
+            <li>halo@namaproduk.id</li>
+            <li>+62 857-9383-0821</li>
+            <li>Senin – Minggu · 08:00 – 21:00 WIB</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span id="current-year"></span> <span data-product-name>NamaProduk</span> · Seluruh hak cipta dilindungi.</span>
+        <span>Data demo tersimpan secara lokal di browser Anda.</span>
+      </div>
+    </div>
+  </footer>
+
   <script src="js/api.js"></script>
   <script src="js/utils.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", async function () {
-      NamaProdukUI.applyProductName();
-      document.getElementById("current-year").textContent = new Date().getFullYear();
-      var list = document.getElementById("partner-list");
-      try {
-        var mitra = await NamaProdukAPI.listMitra();
-        list.innerHTML = mitra.map(function (item) {
-          return '<article class="partner-card"><div><span class="tag">' + NamaProdukUI.escapeHtml(item.kategori) + '</span><h3>' + NamaProdukUI.escapeHtml(item.nama) + '</h3><p>' + NamaProdukUI.escapeHtml(item.alamat) + '</p></div><a class="button button-primary button-small" href="booking.html?mitra=' + encodeURIComponent(item.slug) + '">Lihat halaman booking</a></article>';
-        }).join("");
-      } catch (error) {
-        list.innerHTML = '<p class="notice notice-error">Daftar mitra belum dapat dimuat. Silakan muat ulang halaman.</p>';
-      }
-    });
-  </script>
+  <script src="js/home.js"></script>
 </body>
 </html>
