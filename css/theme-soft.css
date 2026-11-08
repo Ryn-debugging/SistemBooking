@@ -1,0 +1,418 @@
+/* BookingYukk! — Soft Periwinkle Theme
+   Dimuat setelah style.css / booking.css / dashboard.css.
+   Hanya mengubah tampilan (token warna, layout hero, bentuk tombol); tidak menyentuh logika. */
+
+:root {
+  --color-primary: #4C5CA6;
+  --color-primary-hover: #3C4A8C;
+  --color-primary-light: #6676BD;
+  --color-primary-soft: #EDF0FA;
+
+  --color-secondary: #8A9CDB;
+  --color-secondary-hover: #7589CF;
+  --color-secondary-dark: #3C4A8C;
+  --color-secondary-soft: #E8ECF9;
+
+  --color-bg: #F5F6FC;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F9FAFE;
+
+  --color-text: #1E2342;
+  --color-muted: #6B7192;
+  --color-border: #E2E6F4;
+  --color-border-strong: #CBD2EA;
+
+  --color-accent: #4C5CA6;
+  --color-accent-hover: #3C4A8C;
+  --color-accent-soft: #EDF0FA;
+  --color-focus: #8A9CDB;
+
+  --radius-sm: 12px;
+  --radius: 18px;
+  --radius-lg: 24px;
+
+  --shadow-sm: 0 2px 8px rgba(76, 92, 166, 0.07);
+  --shadow-md: 0 10px 28px rgba(76, 92, 166, 0.10);
+  --shadow-lg: 0 20px 48px rgba(76, 92, 166, 0.14);
+}
+
+body {
+  background:
+    radial-gradient(900px 480px at 8% -6%, rgba(138, 156, 219, 0.22), transparent 62%),
+    radial-gradient(760px 420px at 100% 30%, rgba(138, 156, 219, 0.14), transparent 60%),
+    var(--color-bg);
+  background-attachment: fixed;
+}
+
+/* ---------- Buttons: pill, seperti referensi ---------- */
+.button,
+.button-small {
+  border-radius: 999px;
+}
+
+.button-primary,
+.button-gold {
+  background: var(--color-primary);
+  color: #FFFFFF;
+  box-shadow: 0 8px 20px rgba(76, 92, 166, 0.28);
+}
+
+.button-primary:hover:not(:disabled),
+.button-gold:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  color: #FFFFFF;
+  box-shadow: 0 10px 24px rgba(76, 92, 166, 0.34);
+}
+
+.button-secondary {
+  background: #FFFFFF;
+  border-color: var(--color-border-strong);
+}
+
+.button-ghost-light {
+  background: #FFFFFF;
+  color: var(--color-text);
+  border: 1.5px solid var(--color-text);
+}
+
+.button-ghost-light:hover {
+  background: var(--color-text);
+  color: #FFFFFF;
+}
+
+/* ---------- Header: terang, menu teks sederhana ---------- */
+.site-header,
+.site-header--navy {
+  background: rgba(245, 246, 252, 0.82);
+  border-bottom: 0;
+}
+
+.site-header.is-scrolled {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-sm);
+}
+
+.site-header--navy .brand,
+.brand {
+  color: var(--color-text);
+}
+
+.site-header--navy .brand-mark,
+.brand-mark {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 6px 16px rgba(76, 92, 166, 0.16);
+}
+
+.site-header--navy .site-nav a,
+.site-nav a {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.site-header--navy .site-nav a:hover,
+.site-header--navy .site-nav a.is-active,
+.site-nav a:hover,
+.site-nav a.is-active {
+  color: var(--color-primary);
+}
+
+.site-nav a.is-active::after {
+  background: var(--color-text);
+  height: 1.5px;
+}
+
+.site-header--navy .mobile-menu-toggle,
+.mobile-menu-toggle {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+  background: #FFFFFF;
+}
+
+.site-header--navy .mobile-nav,
+.mobile-nav {
+  background: #FFFFFF;
+  border-top: 1px solid var(--color-border);
+}
+
+.site-header--navy .mobile-nav-links a,
+.mobile-nav-links a {
+  color: var(--color-text);
+}
+
+.site-header--navy .mobile-nav-links a:hover,
+.mobile-nav-links a:hover {
+  background: var(--color-primary-soft);
+}
+
+/* ---------- Hero: banner bulat periwinkle, ikon BookingYukk! menggantikan karakter ---------- */
+.hero-banner {
+  background: transparent;
+  color: var(--color-text);
+  padding: 20px 0 104px;
+  overflow: visible;
+}
+
+.hero-banner::before {
+  display: none;
+}
+
+.hero-grid {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 56px 56px 56px 64px;
+  border-radius: 28px;
+  background:
+    radial-gradient(520px 340px at 0% 108%, rgba(255, 255, 255, 0.28), transparent 70%),
+    linear-gradient(120deg, #8394D6 0%, #92A3E0 55%, #A3B2E8 100%);
+  box-shadow: var(--shadow-md);
+}
+
+.hero-grid::before,
+.hero-grid::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-grid::before {
+  width: 520px;
+  height: 520px;
+  left: -180px;
+  bottom: -300px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.hero-grid::after {
+  width: 420px;
+  height: 420px;
+  right: -90px;
+  top: -150px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.hero-kicker {
+  color: #FFFFFF;
+  opacity: 0.92;
+}
+
+.hero-kicker::before {
+  background: #FFFFFF;
+}
+
+.hero-content h1 {
+  color: #FFFFFF;
+  font-size: clamp(2rem, 3.8vw, 3.05rem);
+  text-shadow: 0 1px 8px rgba(60, 74, 140, 0.14);
+}
+
+.hero-copy {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.hero-content .button-gold {
+  background: #FFFFFF;
+  color: var(--color-primary-hover);
+  box-shadow: 0 10px 24px rgba(60, 74, 140, 0.22);
+}
+
+.hero-content .button-gold:hover:not(:disabled) {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-hover);
+}
+
+.hero-content .button-ghost-light {
+  background: transparent;
+  color: #FFFFFF;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+}
+
+.hero-content .button-ghost-light:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+.hero-metrics {
+  border-top-color: rgba(255, 255, 255, 0.35);
+}
+
+.hero-metric strong {
+  color: #FFFFFF;
+}
+
+.hero-metric span {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.hero-visual {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  min-height: 340px;
+}
+
+.hero-logo-orb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 330px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 28%, #FFFFFF 0%, #F1F4FE 62%, #E1E7FA 100%);
+  box-shadow:
+    0 0 0 14px rgba(255, 255, 255, 0.22),
+    0 0 0 34px rgba(255, 255, 255, 0.12),
+    0 26px 56px rgba(60, 74, 140, 0.30);
+  animation: hero-float 6s ease-in-out infinite;
+}
+
+.hero-logo-orb img {
+  width: 78%;
+  height: auto;
+  filter: drop-shadow(0 10px 18px rgba(12, 63, 168, 0.22));
+}
+
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo-orb { animation: none; }
+}
+
+.hero-floating-card {
+  position: relative;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  z-index: 2;
+  width: min(100%, 340px);
+  margin-top: -34px;
+  flex-direction: row;
+  align-items: center;
+  background: #FFFFFF;
+  border: 0;
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: none;
+}
+
+.hero-floating-card strong {
+  color: var(--color-text);
+}
+
+.hero-floating-card span {
+  color: var(--color-muted);
+}
+
+.hero-floating-card .hero-floating-badge {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+/* ---------- Search dock & kartu: lebih lembut ---------- */
+.search-dock,
+.business-card,
+.summary-card,
+.stat-card {
+  border-color: transparent;
+}
+
+.search-dock {
+  border-radius: 26px;
+}
+
+.category-pill-tab {
+  border-radius: 999px;
+  background: var(--color-secondary-soft);
+  border-color: transparent;
+  color: var(--color-primary-hover);
+}
+
+.category-pill-tab:hover {
+  background: #DCE2F6;
+  border-color: transparent;
+}
+
+.category-pill-tab.is-active {
+  background: var(--color-primary);
+  color: #FFFFFF;
+}
+
+/* ---------- Dashboard mitra: sidebar periwinkle lembut ---------- */
+.admin-sidebar {
+  background: linear-gradient(180deg, #7F91D3 0%, #6B7DC6 100%);
+  border-right: 0;
+}
+
+.admin-topbar {
+  background: rgba(245, 246, 252, 0.88);
+}
+
+/* ---------- Footer & banner mitra ---------- */
+.site-footer {
+  background: #3C4A8C;
+  border-top: 0;
+}
+
+.mitra-cta-banner {
+  background: linear-gradient(120deg, #8394D6 0%, #A3B2E8 100%);
+  border-radius: 28px;
+  box-shadow: var(--shadow-md);
+}
+
+.mitra-cta-banner .button-gold {
+  background: #FFFFFF;
+  color: var(--color-primary-hover);
+}
+
+.mitra-cta-banner .button-gold:hover:not(:disabled) {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-hover);
+}
+
+.author-avatar {
+  color: #FFFFFF;
+}
+
+@media (max-width: 960px) {
+  .hero-grid {
+    padding: 36px 26px 40px;
+    border-radius: 24px;
+  }
+  .hero-visual {
+    min-height: 0;
+    margin-top: 8px;
+  }
+  .hero-logo-orb {
+    width: min(78%, 280px);
+  }
+  .hero-floating-card {
+    margin-top: -26px;
+    width: 100%;
+  }
+}
+
+/* Kontras badge: secondary periwinkle terlalu terang untuk teks primary */
+.media-badge--gold {
+  background: #FFFFFF;
+  color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(76, 92, 166, 0.18);
+}
+
+.stepper-item.is-done .stepper-circle,
+.footer-socials a,
+.footer-socials a:hover {
+  background: var(--color-secondary-soft);
+  border-color: var(--color-secondary-soft);
+  color: var(--color-primary);
+}
+
+.tab-button.is-active .tab-badge-count {
+  background: #FFFFFF;
+  color: var(--color-primary);
+}
