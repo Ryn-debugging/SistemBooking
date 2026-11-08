@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Halaman tidak ditemukan | BookingYukk!</title>
+  <style>
+    body{margin:0;min-height:100vh;display:grid;place-items:center;background:#F7F6F2;font-family:Inter,system-ui,sans-serif;color:#222}
+    .box{background:#fff;border:1px solid #EAEAEA;border-radius:16px;padding:40px;max-width:420px;text-align:center;box-shadow:0 12px 32px rgba(23,44,53,.08)}
+    h1{margin:0 0 8px;color:#172C35}p{color:#777}
+    a{display:inline-block;margin:6px;padding:12px 20px;border-radius:12px;background:#172C35;color:#fff;text-decoration:none;font-weight:600}
+    a.g{background:#D6A96B;color:#172C35}
+  </style>
+</head>
+<body><div class="box"><h1>404</h1><p>Halaman tidak ditemukan.</p>
+<a id="home" href="/">Beranda</a><a id="adm" class="g" href="/mitra/login.html">Login Mitra</a></div>
+<script>
+  var base = location.pathname.split("/").slice(0, location.hostname.endsWith("github.io") ? 2 : 1).join("/");
+  document.getElementById("home").href = base + "/index.html";
+  document.getElementById("adm").href = base + "/mitra/login.html";
+</script></body></html>
