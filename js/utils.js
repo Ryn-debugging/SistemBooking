@@ -60,7 +60,7 @@
   };
 
   function getMitraVisuals(slugOrCategory, basePath) {
-    var prefix = basePath || "";
+    var prefix = typeof basePath === "string" && (basePath === "" || basePath.endsWith("/")) ? basePath : "";
     var key = String(slugOrCategory || "").toLowerCase();
     var item = MITRA_VISUALS[key];
     if (!item) {

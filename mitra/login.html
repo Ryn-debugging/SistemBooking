@@ -26,62 +26,139 @@
     </header>
     <main class="auth-main">
       <div class="mitra-login-layout">
+        <!-- Left: Login Form Pane -->
         <section class="auth-card mitra-login-card" aria-labelledby="login-heading">
-          <p class="eyebrow">Portal mitra</p>
+          <div class="login-card-badge">
+            <span class="badge-icon">✦</span>
+            <span>PORTAL MITRA RESMI</span>
+          </div>
           <h1 id="login-heading">Selamat datang kembali</h1>
           <p class="login-intro">
-            Masuk untuk mengelola jadwal dan booking usahamu.
+            Masuk untuk mengelola jadwal harian, layanan, dan booking usaha lokalmu secara real-time.
           </p>
+
           <form id="login-form" class="auth-form" novalidate>
-            <label for="email">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autocomplete="username"
-              placeholder="nama@email.com"
-              required
-            />
-            <label for="password">Kata sandi</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              placeholder="Masukkan kata sandi"
-              required
-            />
+            <div class="input-group">
+              <label for="email">Alamat Email Mitra</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="username"
+                placeholder="nama@email.com"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="password">Kata Sandi</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Masukkan kata sandi akun"
+                required
+              />
+            </div>
+
             <div id="login-error" class="field-error" role="alert" hidden></div>
-            <button class="button button-primary button-full" type="submit">
-              Masuk ke dashboard
+
+            <button class="button button-primary button-full" type="submit" id="btn-login-submit">
+              <span>Masuk ke Dashboard</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </form>
-          <div class="demo-accounts">
-            <h2>Akun mitra yang terhubung</h2>
-            <p><strong>Barbershop Rapi</strong><br /><span>rapi@demo.id</span></p>
-            <p class="field-hint">
-              Gunakan kata sandi yang dibuat untuk akun ini di Supabase Auth.
-            </p>
+
+          <div class="demo-accounts-box">
+            <div class="demo-box-header">
+              <span class="demo-box-title">Akun Demo Mitra (1-Klik Isi Cepat)</span>
+              <span class="demo-box-hint">Sandi: demo123</span>
+            </div>
+            <div class="demo-pills-grid">
+              <button type="button" class="demo-pill-btn" data-demo-email="rapi@demo.id" data-demo-password="demo123">
+                <span class="demo-pill-icon">✂️</span>
+                <span class="demo-pill-info">
+                  <strong>Barbershop Rapi</strong>
+                  <small>rapi@demo.id</small>
+                </span>
+                <span class="demo-pill-action">Pilih</span>
+              </button>
+              <button type="button" class="demo-pill-btn" data-demo-email="senja@demo.id" data-demo-password="demo123">
+                <span class="demo-pill-icon">💇</span>
+                <span class="demo-pill-info">
+                  <strong>Salon Senja</strong>
+                  <small>senja@demo.id</small>
+                </span>
+                <span class="demo-pill-action">Pilih</span>
+              </button>
+              <button type="button" class="demo-pill-btn" data-demo-email="bersih@demo.id" data-demo-password="demo123">
+                <span class="demo-pill-icon">🧺</span>
+                <span class="demo-pill-info">
+                  <strong>Laundry Bersih</strong>
+                  <small>bersih@demo.id</small>
+                </span>
+                <span class="demo-pill-action">Pilih</span>
+              </button>
+            </div>
+            <div class="demo-box-footer">
+              <span>Bukan pemilik usaha?</span>
+              <a href="../admin/index.html" class="admin-redirect-link">Kelola Platform sebagai Admin →</a>
+            </div>
           </div>
         </section>
+
+        <!-- Right: Showcase Pane with Emerald-Lime Gradient -->
         <aside class="login-showcase" aria-labelledby="showcase-heading">
+          <div class="showcase-decor-orb" aria-hidden="true"></div>
           <div class="showcase-copy">
-            <p class="showcase-kicker">BookingYukk! untuk mitra</p>
-            <h2 id="showcase-heading">Urus booking usaha, lebih teratur.</h2>
+            <p class="showcase-kicker">BookingYukk! untuk Mitra</p>
+            <h2 id="showcase-heading">Urus booking usaha, jadi jauh lebih teratur.</h2>
             <p>
-              Pantau permintaan pelanggan, atur jadwal, dan kelola layanan
-              dalam satu dashboard.
+              Pantau permintaan pelanggan, atur jadwal tanpa bentrok, dan kelola layanan usaha kamu dalam satu ekosistem modern.
             </p>
           </div>
+
           <ul class="showcase-benefits">
-            <li><span aria-hidden="true">01</span> Lihat dan kelola booking pelanggan</li>
-            <li><span aria-hidden="true">02</span> Atur ketersediaan jadwal usahamu</li>
-            <li><span aria-hidden="true">03</span> Perbarui layanan dan harga</li>
+            <li>
+              <span aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              <div>
+                <strong>Pemberitahuan booking real-time</strong>
+                <small>Permintaan baru langsung masuk ke antrean tanpa reload</small>
+              </div>
+            </li>
+            <li>
+              <span aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              <div>
+                <strong>Atur slot &amp; jam operasional fleksibel</strong>
+                <small>Buka atau tutup jam booking kapan pun kamu butuh</small>
+              </div>
+            </li>
+            <li>
+              <span aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              <div>
+                <strong>Hubungkan WhatsApp pelanggan otomatis</strong>
+                <small>Dapatkan kode booking resmi untuk konfirmasi cepat</small>
+              </div>
+            </li>
           </ul>
+
           <div class="showcase-preview" aria-label="Ilustrasi ringkasan dashboard mitra">
             <div class="preview-heading">
-              <div><span class="preview-caption">Contoh tampilan</span><strong>Ringkasan usaha</strong></div>
-              <span class="preview-day">Hari ini</span>
+              <div>
+                <span class="preview-caption">LIVE DASHBOARD PREVIEW</span>
+                <strong>Ringkasan Usaha Hari Ini</strong>
+              </div>
+              <span class="preview-day">
+                <span class="pulse-dot"></span>
+                Real-Time
+              </span>
             </div>
             <div class="preview-stats" aria-hidden="true">
               <div><span>Total booking</span><strong>08</strong></div>
@@ -90,11 +167,17 @@
             </div>
             <div class="preview-booking" aria-hidden="true">
               <span class="preview-booking-dot"></span>
-              <div><strong>Booking pelanggan</strong><span>Jadwal dan status dalam satu tempat</span></div>
+              <div>
+                <strong>Barber Reguler + Cuci</strong>
+                <span>Pelanggan: Dimas P. · Jam 14:00</span>
+              </div>
               <span class="preview-status">Menunggu</span>
             </div>
           </div>
-          <p class="showcase-note">Angka pada ilustrasi hanya contoh, bukan data usaha sebenarnya.</p>
+
+          <p class="showcase-note">
+            <span>🛡️ Terenkripsi aman</span> · Terintegrasi dengan database Supabase &amp; WhatsApp.
+          </p>
         </aside>
       </div>
     </main>

@@ -19,16 +19,86 @@
     <div id="booking-loading" class="notice">Memuat halaman booking…</div>
     <div id="booking-not-found" class="empty-state" hidden><h1>Mitra tidak ditemukan</h1><p>Periksa kembali tautan booking atau kembali ke daftar usaha.</p><a class="button button-primary" href="index.html">Kembali ke beranda</a></div>
     <div id="booking-content" hidden>
-      <section class="business-header" id="business-header">
-        <div class="business-heading">
-          <div><p class="eyebrow" id="business-category"></p><h1 id="business-name"></h1><p class="business-address" id="business-address"></p></div>
-          <span class="booking-intro-badge">Booking tanpa akun</span>
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="index.html">Beranda</a>
+        <span class="breadcrumb-sep" aria-hidden="true">/</span>
+        <a href="index.html#mitra">Cari Mitra</a>
+        <span class="breadcrumb-sep" aria-hidden="true">/</span>
+        <span id="breadcrumb-business">Detail Booking</span>
+      </nav>
+
+      <!-- Business Detail Top Hero Card & Photo Gallery -->
+      <section class="business-hero-card business-header" id="business-header">
+        <div class="business-header-top">
+          <div>
+            <div class="business-badges-row">
+              <span class="tag" id="business-category"></span>
+              <span class="business-rating-inline">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span id="business-rating-score">4.9 · Luar Biasa</span>
+              </span>
+              <span class="booking-intro-badge">Mitra Resmi BookingYukk!</span>
+            </div>
+            <h1 id="business-name"></h1>
+            <div class="business-meta-bar">
+              <span class="business-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span id="business-address"></span>
+              </span>
+              <span class="business-meta-item business-hours">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <span>Konfirmasi Langsung WhatsApp</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="business-start-price">
+            <small>Harga layanan mulai</small>
+            <strong id="business-min-price">—</strong>
+          </div>
         </div>
+
+        <div class="business-gallery" aria-label="Galeri foto tempat usaha">
+          <div class="gallery-item gallery-item--main">
+            <img id="gallery-img-main" src="assets/images/hero-studio.jpg" alt="Suasana utama tempat layanan">
+          </div>
+          <div class="gallery-item">
+            <img id="gallery-img-detail" src="assets/images/barbershop-detail.jpg" alt="Detail peralatan dan fasilitas" loading="lazy">
+          </div>
+          <div class="gallery-item">
+            <img id="gallery-img-alt" src="assets/images/hero-studio.jpg" alt="Area layanan dan kenyamanan" loading="lazy">
+            <span class="gallery-caption-chip">Terverifikasi</span>
+          </div>
+        </div>
+
+        <div class="business-highlights-row">
+          <p class="business-desc-text" id="business-desc"></p>
+          <div class="facility-pills" id="business-facilities" aria-label="Fasilitas layanan"></div>
+        </div>
+
         <section class="business-hours-section" aria-labelledby="business-hours-heading">
-          <div class="business-hours-heading"><h2 id="business-hours-heading">Jam operasional</h2><p>Pilih jadwal yang sesuai dengan waktu buka usaha.</p></div>
+          <div class="business-hours-heading"><h2 id="business-hours-heading">Jam operasional mingguan</h2><p>Pilih jadwal booking yang sesuai dengan jam operasional usaha berikut.</p></div>
           <div class="business-hours-list" id="business-hours-value" aria-label="Jam operasional mingguan"></div>
         </section>
       </section>
+
+      <!-- Stepper Indicator -->
+      <div class="checkout-stepper" aria-label="Tahapan pemesanan">
+        <div class="stepper-item is-active" id="stepper-1">
+          <span class="stepper-circle">1</span>
+          <span>Pilih Layanan</span>
+        </div>
+        <div class="stepper-line"></div>
+        <div class="stepper-item" id="stepper-2">
+          <span class="stepper-circle">2</span>
+          <span>Pilih Tanggal &amp; Waktu</span>
+        </div>
+        <div class="stepper-line"></div>
+        <div class="stepper-item" id="stepper-3">
+          <span class="stepper-circle">3</span>
+          <span>Isi Kontak &amp; Kirim</span>
+        </div>
+      </div>
       <div class="booking-layout" id="booking-layout">
         <div class="booking-flow">
           <div id="booking-error" class="notice notice-error" role="alert" hidden></div>

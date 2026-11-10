@@ -35,6 +35,7 @@
       document.getElementById("business-name").textContent = mitra.nama;
       document.getElementById("business-address").textContent = mitra.alamat;
       renderBusinessHours();
+      populateBusinessVisuals();
       document.getElementById("booking-content").hidden = false;
       renderServices();
       renderDates();
@@ -252,6 +253,7 @@
       ? "Pilihan lengkap · " + ui.formatRupiah(selectedService.harga * partySize)
       : "Lanjutkan pemesanan";
     if (!complete) guideButton.textContent = getNextBookingTarget().label;
+    updateStepperProgress();
   }
 
   function getNextBookingTarget() {
@@ -357,5 +359,83 @@
       month: Number(parts.find(function (part) { return part.type === "month"; }).value),
       day: Number(parts.find(function (part) { return part.type === "day"; }).value),
     };
+  }
+
+  function populateBusinessVisuals() {
+    if (!mitra) return;
+    var visuals = ui.getMitraVisuals(mitra.slug, "");
+    var prices = layanan.map(function (item) { return Number(item.harga) || 0; });
+    var minPrice = prices.length ? Math.min.apply(null, prices) : 0;
+
+    var breadcrumb = document.getElementById("breadcrumb-business");
+    if (breadcrumb) breadcrumb.textContent = mitra.nama;
+
+    var ratingScore = document.getElementById("business-rating-score");
+    if (ratingScore) {
+      ratingScore.textContent = visuals.rating + " · " + visuals.ratingLabel + " (" + visuals.reviews + " ulasan)";
+    }
+
+    var minPriceEl = document.getElementById("business-min-price");
+    if (minPriceEl) {
+      minPriceEl.textContent = prices.length ? ui.formatRupiah(minPrice) : "—";
+    }
+
+    var imgMain = document.getElementById("gallery-img-main");
+    var imgDetail = document.getElementById("gallery-img-detail");
+    var imgAlt = document.getElementById("gallery-img-alt");
+    if (imgMain && visuals.mainImage) {
+      imgMain.src = visuals.mainImage;
+      imgMain.alt = "Suasana utama " + mitra.nama;
+    }
+    if (imgDetail && visuals.detailImage) {
+      imgDetail.src = visuals.detailImage;
+      imgDetail.alt = "Detail fasilitas " + mitra.nama;
+    }
+    if (imgAlt && visuals.altImage) {
+      imgAlt.src = visuals.altImage;
+      imgAlt.alt = "Area layanan " + mitra.nama;
+    }
+
+    var descEl = document.getElementById("business-desc");
+    if (descEl && visuals.shortDesc) descEl.textContent = visuals.shortDesc;
+
+    var facEl = document.getElementById("business-facilities");
+    if (facEl && visuals.facilities) {
+      facEl.innerHTML = visuals.facilities.map(function (fac) {
+        return (
+          '<span class="facility-pill">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>' +
+            ui.escapeHtml(fac) +
+          '</span>'
+        );
+      }).join("");
+    }
+  }
+
+  function updateStepperProgress() {
+    var step1 = document.getElementById("stepper-1");
+    var step2 = document.getElementById("stepper-2");
+    var step3 = document.getElementById("stepper-3");
+    if (!step1 || !step2 || !step3) return;
+
+    if (selectedService) {
+      step1.classList.add("is-done");
+      step1.classList.remove("is-active");
+      step2.classList.add("is-active");
+    } else {
+      step1.classList.add("is-active");
+      step1.classList.remove("is-done");
+      step2.classList.remove("is-active", "is-done");
+      step3.classList.remove("is-active", "is-done");
+    }
+
+    if (selectedSlot) {
+      step2.classList.add("is-done");
+      step2.classList.remove("is-active");
+      step3.classList.add("is-active");
+    } else {
+      step2.classList.remove("is-done");
+      step3.classList.remove("is-active", "is-done");
+    }
   }
 })();

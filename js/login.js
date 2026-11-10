@@ -34,5 +34,18 @@
           error.hidden = false;
         }
       });
+
+    document.querySelectorAll("[data-demo-email]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var email = button.getAttribute("data-demo-email");
+        var password = button.getAttribute("data-demo-password") || "demo123";
+        var emailInput = document.getElementById("email");
+        var passwordInput = document.getElementById("password");
+        if (emailInput) emailInput.value = email;
+        if (passwordInput) passwordInput.value = password;
+        if (error) error.hidden = true;
+        if (emailInput) emailInput.focus();
+      });
+    });
   });
 })();
