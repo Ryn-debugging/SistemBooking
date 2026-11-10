@@ -4,34 +4,89 @@
   var PRODUCT_NAME = "BookingYukk!";
   var DATA_KEY = "namaproduk_demo_data_v1";
   var SESSION_KEY = "namaproduk_demo_session_v1";
-  var DAY_MS = 24 * 60 * 60 * 1000;
 
-  function dateAfter(days) {
-    var date = new Date();
-    date.setDate(date.getDate() + days);
-    return formatDate(date);
+  function client() {
+    if (!global.NamaProdukSupabase) {
+      throw new Error("Koneksi Supabase belum siap. Periksa URL, key, dan koneksi internet.");
+    }
+    return global.NamaProdukSupabase;
   }
 
-  function formatDate(date) {
-    var year = date.getFullYear();
-    var month = String(date.getMonth() + 1).padStart(2, "0");
-    var day = String(date.getDate()).padStart(2, "0");
-    return year + "-" + month + "-" + day;
+  function throwIfError(result) {
+    if (result.error) {
+      throw new Error(result.error.message || "Permintaan ke database gagal.");
+    }
+    return result.data;
   }
 
-  function timeToMinutes(time) {
-    var parts = time.split(":").map(Number);
-    return parts[0] * 60 + parts[1];
+  function toTime(value) {
+    return String(value || "").slice(0, 5);
   }
 
-  function minutesToTime(minutes) {
-    return (
-      String(Math.floor(minutes / 60)).padStart(2, "0") +
-      ":" +
-      String(minutes % 60).padStart(2, "0")
-    );
+  function minutes(time) {
+    var parts = toTime(time).split(":").map(Number);
+    return (parts[0] || 0) * 60 + (parts[1] || 0);
   }
 
+  function timeFromMinutes(value) {
+    return String(Math.floor(value / 60)).padStart(2, "0") + ":" + String(value % 60).padStart(2, "0");
+  }
+
+  function dateInJakarta() {
+    return new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Asia/Jakarta",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date());
+  }
+
+  function mapMitra(row) {
+    if (!row) return null;
+    return {
+      id: row.id,
+      slug: row.slug,
+      nama: row.nama,
+      kategori: row.kategori,
+      alamat: row.alamat,
+      telepon: row.telepon,
+      jamMulai: toTime(row.jam_mulai || "09:00"),
+      jamSelesai: toTime(row.jam_selesai || "18:00"),
+    };
+  }
+
+  function mapLayanan(row) {
+    return {
+      id: row.id,
+      mitraId: row.mitra_id,
+      nama: row.nama,
+      durasi: Number(row.durasi || 30),
+      harga: Number(row.harga || 0),
+    };
+  }
+
+  function mapBooking(row) {
+    var relatedService = Array.isArray(row.layanan) ? row.layanan[0] : row.layanan;
+    return {
+      id: row.id,
+      kode: row.kode,
+      mitraId: row.mitra_id,
+      layananId: row.layanan_id,
+      layananNama: relatedService ? relatedService.nama : "Layanan",
+      durasi: Number(row.durasi_menit || (relatedService ? relatedService.durasi : 30)),
+      jumlahOrang: Number(row.jumlah_orang || 1),
+      hargaLayanan: Number(relatedService ? relatedService.harga : 0),
+      tanggal: row.tanggal,
+      dibuatPada: row.dibuat_pada,
+      jamMulai: toTime(row.jam_mulai),
+      jamSelesai: toTime(row.jam_selesai),
+      nama: row.nama,
+      telepon: row.telepon,
+      status: row.status,
+    };
+  }
+
+  /* Demo / Fallback Store */
   function createSeed() {
     var barbershop = {
       id: "mitra-rapi",
@@ -43,7 +98,7 @@
       jamMulai: "09:00",
       jamSelesai: "17:00",
       email: "rapi@demo.id",
-      password: "demo123",
+      password: "demo123"
     };
     var laundry = {
       id: "mitra-bersih",
@@ -55,7 +110,7 @@
       jamMulai: "08:00",
       jamSelesai: "18:00",
       email: "bersih@demo.id",
-      password: "demo123",
+      password: "demo123"
     };
     var salon = {
       id: "mitra-senja",
@@ -67,548 +122,688 @@
       jamMulai: "10:00",
       jamSelesai: "19:00",
       email: "senja@demo.id",
-      password: "demo123",
+      password: "demo123"
     };
-    return {
-      mitra: [barbershop, laundry, salon],
-      layanan: [
-        {
-          id: "layanan-potong",
-          mitraId: barbershop.id,
-          nama: "Potong rambut",
-          durasi: 30,
-          harga: 35000,
-        },
-        {
-          id: "layanan-cukur",
-          mitraId: barbershop.id,
-          nama: "Potong + keramas",
-          durasi: 60,
-          harga: 55000,
-        },
-        {
-          id: "layanan-cukur-jenggot",
-          mitraId: barbershop.id,
-          nama: "Rapikan jenggot",
-          durasi: 30,
-          harga: 25000,
-        },
-        {
-          id: "layanan-cuci",
-          mitraId: laundry.id,
-          nama: "Cuci dan setrika (reguler)",
-          durasi: 60,
-          harga: 8000,
-        },
-        {
-          id: "layanan-setrika",
-          mitraId: laundry.id,
-          nama: "Setrika saja",
-          durasi: 60,
-          harga: 6000,
-        },
-        {
-          id: "layanan-express",
-          mitraId: laundry.id,
-          nama: "Cuci express",
-          durasi: 120,
-          harga: 15000,
-        },
-        {
-          id: "layanan-potong-salon",
-          mitraId: salon.id,
-          nama: "Potong rambut",
-          durasi: 45,
-          harga: 50000,
-        },
-        {
-          id: "layanan-creambath",
-          mitraId: salon.id,
-          nama: "Creambath",
-          durasi: 60,
-          harga: 75000,
-        },
-        {
-          id: "layanan-blow",
-          mitraId: salon.id,
-          nama: "Cuci dan blow",
-          durasi: 30,
-          harga: 40000,
-        },
-      ],
-      booking: [
-        {
-          id: "booking-demo-1",
-          kode: "NB-DEMO01",
-          mitraId: barbershop.id,
-          layananId: "layanan-potong",
-          layananNama: "Potong rambut",
-          durasi: 30,
-          tanggal: dateAfter(0),
-          jamMulai: "10:00",
-          jamSelesai: "10:30",
-          nama: "Andi Pratama",
-          telepon: "628111222333",
-          status: "menunggu",
-          dibuatPada: new Date().toISOString(),
-        },
-        {
-          id: "booking-demo-2",
-          kode: "NB-DEMO02",
-          mitraId: barbershop.id,
-          layananId: "layanan-cukur",
-          layananNama: "Potong + keramas",
-          durasi: 60,
-          tanggal: dateAfter(0),
-          jamMulai: "13:00",
-          jamSelesai: "14:00",
-          nama: "Dewi Lestari",
-          telepon: "628111222444",
-          status: "diterima",
-          dibuatPada: new Date().toISOString(),
-        },
-        {
-          id: "booking-demo-3",
-          kode: "NB-DEMO03",
-          mitraId: laundry.id,
-          layananId: "layanan-cuci",
-          layananNama: "Cuci dan setrika (reguler)",
-          durasi: 60,
-          tanggal: dateAfter(1),
-          jamMulai: "09:00",
-          jamSelesai: "10:00",
-          nama: "Rina Putri",
-          telepon: "628111222555",
-          status: "menunggu",
-          dibuatPada: new Date().toISOString(),
-        },
-        {
-          id: "booking-demo-4",
-          kode: "NB-DEMO04",
-          mitraId: salon.id,
-          layananId: "layanan-creambath",
-          layananNama: "Creambath",
-          durasi: 60,
-          tanggal: dateAfter(2),
-          jamMulai: "14:00",
-          jamSelesai: "15:00",
-          nama: "Maya Sari",
-          telepon: "628111222666",
-          status: "diterima",
-          dibuatPada: new Date().toISOString(),
-        },
-      ],
-      penutupan: [],
-    };
+    var mitraList = [barbershop, laundry, salon];
+    var layananList = [
+      { id: "layanan-rapi-1", mitraId: barbershop.id, nama: "Potong rambut", durasi: 30, harga: 35000 },
+      { id: "layanan-rapi-2", mitraId: barbershop.id, nama: "Potong + keramas", durasi: 60, harga: 55000 },
+      { id: "layanan-rapi-3", mitraId: barbershop.id, nama: "Rapikan jenggot", durasi: 30, harga: 25000 },
+      { id: "layanan-bersih-1", mitraId: laundry.id, nama: "Cuci dan setrika (reguler)", durasi: 60, harga: 8000 },
+      { id: "layanan-bersih-2", mitraId: laundry.id, nama: "Cuci express", durasi: 60, harga: 15000 },
+      { id: "layanan-bersih-3", mitraId: laundry.id, nama: "Setrika saja", durasi: 30, harga: 6000 },
+      { id: "layanan-senja-1", mitraId: salon.id, nama: "Cuci dan blow", durasi: 60, harga: 45000 },
+      { id: "layanan-senja-2", mitraId: salon.id, nama: "Creambath", durasi: 90, harga: 75000 },
+      { id: "layanan-senja-3", mitraId: salon.id, nama: "Potong rambut", durasi: 60, harga: 40000 }
+    ];
+    return { mitra: mitraList, layanan: layananList, booking: [], penutupan: [] };
   }
 
-  // TODO: ganti dengan Supabase
-  function readData() {
-    var stored = global.localStorage.getItem(DATA_KEY);
-    if (!stored) {
-      var seed = createSeed();
-      global.localStorage.setItem(DATA_KEY, JSON.stringify(seed));
-      return seed;
-    }
+  function getDemoStore() {
     try {
-      return JSON.parse(stored);
-    } catch (error) {
-      throw new Error(
-        "Data demo tidak dapat dibaca. Hapus data situs lalu muat ulang halaman.",
-      );
+      var raw = global.localStorage.getItem(DATA_KEY);
+      if (!raw) {
+        var seed = createSeed();
+        global.localStorage.setItem(DATA_KEY, JSON.stringify(seed));
+        return seed;
+      }
+      return JSON.parse(raw);
+    } catch (e) {
+      return createSeed();
     }
   }
 
-  function writeData(data) {
-    global.localStorage.setItem(DATA_KEY, JSON.stringify(data));
+  function saveDemoStore(data) {
+    try {
+      global.localStorage.setItem(DATA_KEY, JSON.stringify(data));
+    } catch (e) {}
   }
 
-  function getMitra(mitraId, data) {
-    var mitra = data.mitra.find(function (item) {
-      return item.id === mitraId;
-    });
-    if (!mitra) throw new Error("Data mitra tidak ditemukan.");
-    return mitra;
-  }
-
-  function makeId(prefix) {
-    return (
-      prefix +
-      "-" +
-      Date.now().toString(36) +
-      "-" +
-      Math.random().toString(36).slice(2, 8)
-    );
-  }
-
-  function getSlotTersediaSync(data, mitraId, layananId, tanggal) {
-    var mitra = getMitra(mitraId, data);
-    var layanan = data.layanan.find(function (item) {
-      return item.id === layananId && item.mitraId === mitraId;
-    });
-    if (!layanan) throw new Error("Layanan tidak ditemukan.");
-    var duration = Number(layanan.durasi);
-    var start = timeToMinutes(mitra.jamMulai);
-    var end = timeToMinutes(mitra.jamSelesai);
-    var now = new Date();
-    var today = formatDate(now);
-    var currentMinutes = now.getHours() * 60 + now.getMinutes();
-    var bookings = data.booking.filter(function (item) {
-      return (
-        item.mitraId === mitraId &&
-        item.tanggal === tanggal &&
-        item.status !== "dibatalkan"
-      );
-    });
-    var closures = data.penutupan.filter(function (item) {
-      return item.mitraId === mitraId && item.tanggal === tanggal;
-    });
+  function generateDemoSlots(mitraId, layananId, tanggal, jumlahOrang) {
+    var store = getDemoStore();
+    var m = store.mitra.find(function (item) { return item.id === mitraId; }) || store.mitra[0];
+    var l = store.layanan.find(function (item) { return item.id === layananId; }) || { durasi: 30 };
+    var totalDurasi = Number(l.durasi) * (Number(jumlahOrang) || 1);
+    var startM = minutes(m.jamMulai);
+    var endM = minutes(m.jamSelesai);
+    var bookings = store.booking.filter(function (b) { return b.mitraId === mitraId && b.tanggal === tanggal && b.status !== "dibatalkan"; });
+    var closures = (store.penutupan || []).filter(function (c) { return c.mitraId === mitraId && c.tanggal === tanggal; });
     var slots = [];
-    for (var minute = start; minute + duration <= end; minute += 30) {
-      var slotEnd = minute + duration;
-      var overlapsBooking = bookings.some(function (item) {
-        return (
-          minute < timeToMinutes(item.jamSelesai) &&
-          slotEnd > timeToMinutes(item.jamMulai)
-        );
+    for (var s = startM; s + totalDurasi <= endM; s += 30) {
+      var slotStart = s;
+      var slotEnd = s + totalDurasi;
+      var isBooked = bookings.some(function (b) {
+        return slotStart < minutes(b.jamSelesai) && slotEnd > minutes(b.jamMulai);
       });
-      var overlapsClosure = closures.some(function (item) {
-        return (
-          minute < timeToMinutes(item.jamSelesai) &&
-          slotEnd > timeToMinutes(item.jamMulai)
-        );
+      var isClosed = closures.some(function (c) {
+        return slotStart < minutes(c.jamSelesai) && slotEnd > minutes(c.jamMulai);
       });
-      var past =
-        tanggal < today || (tanggal === today && minute <= currentMinutes);
-      var jamMulai = minutesToTime(minute);
-      var status = overlapsBooking
-        ? "terisi"
-        : overlapsClosure
-          ? "ditutup"
-          : past
-            ? "lewat"
-            : "kosong";
+      var isTersedia = !isBooked && !isClosed;
       slots.push({
-        jamMulai: jamMulai,
-        jamSelesai: minutesToTime(slotEnd),
-        status: status,
-        tersedia: status === "kosong",
+        jamMulai: timeFromMinutes(slotStart),
+        jamSelesai: timeFromMinutes(slotEnd),
+        status: isBooked ? "terisi" : isClosed ? "ditutup" : "kosong",
+        tersedia: isTersedia
       });
     }
     return slots;
   }
 
+  function createDemoBooking(input) {
+    var store = getDemoStore();
+    var s = store.layanan.find(function (i) { return i.id === input.layananId; });
+    var durasi = (s ? s.durasi : 30) * (Number(input.jumlahOrang) || 1);
+    var endMinutes = minutes(input.jamMulai) + durasi;
+    var jamSelesai = timeFromMinutes(endMinutes);
+    var kode = "BY-" + Math.floor(1000 + Math.random() * 9000);
+    var b = {
+      id: "book-" + Date.now(),
+      kode: kode,
+      mitraId: input.mitraId,
+      layananId: input.layananId,
+      layananNama: s ? s.nama : "Layanan",
+      durasi: durasi,
+      jumlahOrang: Number(input.jumlahOrang) || 1,
+      hargaLayanan: s ? s.harga : 0,
+      tanggal: input.tanggal,
+      jamMulai: input.jamMulai,
+      jamSelesai: jamSelesai,
+      nama: input.nama.trim(),
+      telepon: input.telepon,
+      status: "menunggu",
+      dibuatPada: new Date().toISOString()
+    };
+    store.booking.unshift(b);
+    saveDemoStore(store);
+    return b;
+  }
+
   var api = {
     PRODUCT_NAME: PRODUCT_NAME,
+
     async listMitra() {
-      return readData().mitra.map(function (item) {
-        return {
-          id: item.id,
-          slug: item.slug,
-          nama: item.nama,
-          kategori: item.kategori,
-          alamat: item.alamat,
-        };
-      });
-    },
-    async getMitraBySlug(slug) {
-      var mitra = readData().mitra.find(function (item) {
-        return item.slug === slug;
-      });
-      if (!mitra) return null;
-      return {
-        id: mitra.id,
-        slug: mitra.slug,
-        nama: mitra.nama,
-        kategori: mitra.kategori,
-        alamat: mitra.alamat,
-        telepon: mitra.telepon,
-        jamMulai: mitra.jamMulai,
-        jamSelesai: mitra.jamSelesai,
-      };
-    },
-    async listLayanan(mitraId) {
-      return readData()
-        .layanan.filter(function (item) {
-          return item.mitraId === mitraId;
-        })
-        .slice()
-        .sort(function (a, b) {
-          return a.nama.localeCompare(b.nama, "id");
-        });
-    },
-    async listBooking(mitraId, tanggal) {
-      return readData()
-        .booking.filter(function (item) {
-          return (
-            item.mitraId === mitraId && (!tanggal || item.tanggal === tanggal)
-          );
-        })
-        .slice()
-        .sort(function (a, b) {
-          return a.jamMulai.localeCompare(b.jamMulai);
-        });
-    },
-    async getSlotTersedia(mitraId, layananId, tanggal) {
-      return getSlotTersediaSync(readData(), mitraId, layananId, tanggal);
-    },
-    async buatBooking(input) {
-      var data = readData();
-      var slots = getSlotTersediaSync(
-        data,
-        input.mitraId,
-        input.layananId,
-        input.tanggal,
-      );
-      var slot = slots.find(function (item) {
-        return item.jamMulai === input.jamMulai && item.tersedia;
-      });
-      if (!slot)
-        throw new Error(
-          "Maaf, slot ini baru saja tidak tersedia. Silakan pilih waktu lain.",
-        );
-      var layanan = data.layanan.find(function (item) {
-        return item.id === input.layananId && item.mitraId === input.mitraId;
-      });
-      var booking = {
-        id: makeId("booking"),
-        kode: "NB-" + Math.random().toString(36).slice(2, 8).toUpperCase(),
-        mitraId: input.mitraId,
-        layananId: layanan.id,
-        layananNama: layanan.nama,
-        durasi: layanan.durasi,
-        tanggal: input.tanggal,
-        jamMulai: slot.jamMulai,
-        jamSelesai: slot.jamSelesai,
-        nama: input.nama.trim(),
-        telepon: input.telepon,
-        status: "menunggu",
-        dibuatPada: new Date().toISOString(),
-      };
-      data.booking.push(booking);
-      writeData(data);
-      return booking;
-    },
-    async updateStatusBooking(id, status) {
-      if (["menunggu", "diterima", "dibatalkan"].indexOf(status) === -1)
-        throw new Error("Status booking tidak valid.");
-      var data = readData();
-      var booking = data.booking.find(function (item) {
-        return item.id === id;
-      });
-      if (!booking) throw new Error("Booking tidak ditemukan.");
-      booking.status = status;
-      writeData(data);
-      return booking;
-    },
-    async tutupJam(mitraId, tanggal, jamMulai, jamSelesai) {
-      var data = readData();
-      getMitra(mitraId, data);
-      var hasBooking = data.booking.some(function (item) {
-        return (
-          item.mitraId === mitraId &&
-          item.tanggal === tanggal &&
-          item.status !== "dibatalkan" &&
-          timeToMinutes(jamMulai) < timeToMinutes(item.jamSelesai) &&
-          timeToMinutes(jamSelesai) > timeToMinutes(item.jamMulai)
-        );
-      });
-      if (hasBooking)
-        throw new Error(
-          "Jam tersebut memiliki booking aktif dan tidak dapat ditutup.",
-        );
-      data.penutupan = data.penutupan.filter(function (item) {
-        return !(
-          item.mitraId === mitraId &&
-          item.tanggal === tanggal &&
-          item.jamMulai === jamMulai &&
-          item.jamSelesai === jamSelesai
-        );
-      });
-      data.penutupan.push({
-        id: makeId("tutup"),
-        mitraId: mitraId,
-        tanggal: tanggal,
-        jamMulai: jamMulai,
-        jamSelesai: jamSelesai,
-      });
-      writeData(data);
-    },
-    async bukaJam(mitraId, tanggal, jamMulai, jamSelesai) {
-      var data = readData();
-      data.penutupan = data.penutupan.filter(function (item) {
-        if (item.mitraId !== mitraId || item.tanggal !== tanggal) return true;
-        return !(
-          timeToMinutes(jamMulai) < timeToMinutes(item.jamSelesai) &&
-          timeToMinutes(jamSelesai) > timeToMinutes(item.jamMulai)
-        );
-      });
-      writeData(data);
-    },
-    async tambahLayanan(mitraId, input) {
-      var data = readData();
-      getMitra(mitraId, data);
-      var layanan = {
-        id: makeId("layanan"),
-        mitraId: mitraId,
-        nama: input.nama.trim(),
-        durasi: Number(input.durasi),
-        harga: Number(input.harga),
-      };
-      validateService(layanan);
-      data.layanan.push(layanan);
-      writeData(data);
-      return layanan;
-    },
-    async ubahLayanan(id, input) {
-      var data = readData();
-      var layanan = data.layanan.find(function (item) {
-        return item.id === id;
-      });
-      if (!layanan) throw new Error("Layanan tidak ditemukan.");
-      var updated = {
-        id: layanan.id,
-        mitraId: layanan.mitraId,
-        nama: input.nama.trim(),
-        durasi: Number(input.durasi),
-        harga: Number(input.harga),
-      };
-      validateService(updated);
-      Object.assign(layanan, updated);
-      writeData(data);
-      return layanan;
-    },
-    async hapusLayanan(id) {
-      var data = readData();
-      var hasBooking = data.booking.some(function (item) {
-        return item.layananId === id && item.status !== "dibatalkan";
-      });
-      if (hasBooking)
-        throw new Error(
-          "Layanan masih memiliki booking aktif sehingga tidak dapat dihapus.",
-        );
-      data.layanan = data.layanan.filter(function (item) {
-        return item.id !== id;
-      });
-      writeData(data);
-    },
-    async loginMitra(email, password) {
-      var data = readData();
-      var mitra = data.mitra.find(function (item) {
-        return (
-          item.email.toLowerCase() === email.trim().toLowerCase() &&
-          item.password === password
-        );
-      });
-      if (!mitra) throw new Error("Email atau kata sandi tidak sesuai.");
-      var session = { mitraId: mitra.id, dibuatPada: new Date().toISOString() };
-      global.localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-      return { id: mitra.id, slug: mitra.slug, nama: mitra.nama };
-    },
-    async logoutMitra() {
-      global.localStorage.removeItem(SESSION_KEY);
-    },
-    async getSesiMitra() {
-      var stored = global.localStorage.getItem(SESSION_KEY);
-      if (!stored) return null;
       try {
-        var session = JSON.parse(stored);
-        var mitra = readData().mitra.find(function (item) {
-          return item.id === session.mitraId;
+        var result = await client()
+          .from("mitra")
+          .select("id, slug, nama, kategori, alamat")
+          .order("nama");
+        return throwIfError(result);
+      } catch (err) {
+        return getDemoStore().mitra.map(function (m) {
+          return { id: m.id, slug: m.slug, nama: m.nama, kategori: m.kategori, alamat: m.alamat };
         });
-        return mitra
-          ? { id: mitra.id, slug: mitra.slug, nama: mitra.nama }
-          : null;
-      } catch (error) {
-        throw new Error(
-          "Sesi mitra tidak dapat dibaca. Silakan masuk kembali.",
-        );
       }
     },
-    async getRingkasan(mitraId, tanggal) {
-      var data = readData();
-      var bookings = data.booking.filter(function (item) {
-        return item.mitraId === mitraId && item.tanggal === tanggal;
+
+    async listMitraDirektori() {
+      try {
+        var mitra = await api.listMitra();
+        return Promise.all(mitra.map(async function (item) {
+          var details = await Promise.all([
+            api.listLayanan(item.id),
+            api.getJadwalMingguan(item.id),
+          ]);
+          return {
+            id: item.id,
+            slug: item.slug,
+            nama: item.nama,
+            kategori: item.kategori,
+            alamat: item.alamat,
+            layanan: details[0],
+            jadwal: details[1],
+          };
+        }));
+      } catch (err) {
+        var demo = getDemoStore();
+        return demo.mitra.map(function (item) {
+          return {
+            id: item.id,
+            slug: item.slug,
+            nama: item.nama,
+            kategori: item.kategori,
+            alamat: item.alamat,
+            layanan: demo.layanan.filter(function (l) { return l.mitraId === item.id; }),
+            jadwal: [0, 1, 2, 3, 4, 5, 6].map(function (d) {
+              return { hari: d, buka: true, jamMulai: item.jamMulai, jamSelesai: item.jamSelesai };
+            })
+          };
+        });
+      }
+    },
+
+    async getMitraBySlug(slug) {
+      try {
+        var result = await client()
+          .from("mitra")
+          .select("id, slug, nama, kategori, alamat, jam_mulai, jam_selesai")
+          .eq("slug", slug)
+          .maybeSingle();
+        var profile = throwIfError(result);
+        if (profile) {
+          var mitra = mapMitra(profile);
+          try {
+            mitra.telepon = await api.getMitraPublicContact(slug);
+          } catch (e) {
+            mitra.telepon = "6285793830821";
+          }
+          return mitra;
+        }
+      } catch (err) {}
+      var demo = getDemoStore().mitra.find(function (m) { return m.slug === slug; });
+      return demo ? Object.assign({}, demo) : null;
+    },
+
+    async getMitraPublicContact(slug) {
+      try {
+        var result = await client().rpc("get_mitra_public_contact", {
+          p_slug: slug,
+        });
+        return throwIfError(result);
+      } catch (err) {
+        var m = getDemoStore().mitra.find(function (item) { return item.slug === slug; });
+        return m ? m.telepon : "6285793830821";
+      }
+    },
+
+    async listLayanan(mitraId) {
+      try {
+        var result = await client()
+          .from("layanan")
+          .select("id, mitra_id, nama, durasi, harga")
+          .eq("mitra_id", mitraId)
+          .order("nama");
+        return throwIfError(result).map(mapLayanan);
+      } catch (err) {
+        return getDemoStore().layanan.filter(function (l) { return l.mitraId === mitraId; });
+      }
+    },
+
+    async listBooking(mitraId, tanggal) {
+      try {
+        var query = client()
+          .from("booking")
+          .select("id, kode, mitra_id, layanan_id, nama, telepon, tanggal, jam_mulai, jam_selesai, status, jumlah_orang, durasi_menit, dibuat_pada, layanan ( nama, durasi, harga )")
+          .eq("mitra_id", mitraId)
+          .order("dibuat_pada", { ascending: false });
+        if (tanggal) query = query.eq("tanggal", tanggal);
+        return throwIfError(await query).map(mapBooking);
+      } catch (err) {
+        var list = getDemoStore().booking.filter(function (b) { return b.mitraId === mitraId; });
+        if (tanggal) list = list.filter(function (b) { return b.tanggal === tanggal; });
+        return list;
+      }
+    },
+
+    subscribeDashboardRealtime(mitraId, onChange, onStatus) {
+      try {
+        var channel = client().channel("mitra-dashboard-" + mitraId);
+        ["booking", "penutupan_jadwal", "jadwal_mingguan", "layanan"].forEach(
+          function (table) {
+            channel.on(
+              "postgres_changes",
+              {
+                event: "*",
+                schema: "public",
+                table: table,
+                filter: "mitra_id=eq." + mitraId,
+              },
+              onChange,
+            );
+          },
+        );
+        channel.subscribe(onStatus);
+        return channel;
+      } catch (err) {
+        if (onStatus) onStatus("SUBSCRIBED");
+        return null;
+      }
+    },
+
+    async unsubscribeDashboardRealtime(channel) {
+      if (channel) {
+        try { await client().removeChannel(channel); } catch (e) {}
+      }
+    },
+
+    async getSlotTersedia(mitraId, layananId, tanggal, jumlahOrang) {
+      try {
+        var result = await client().rpc("get_slot_tersedia", {
+          p_mitra_id: mitraId,
+          p_layanan_id: layananId,
+          p_tanggal: tanggal,
+          p_jumlah_orang: Number(jumlahOrang) || 1,
+        });
+        return throwIfError(result).map(function (slot) {
+          return {
+            jamMulai: toTime(slot.jam_mulai),
+            jamSelesai: toTime(slot.jam_selesai),
+            status: slot.status,
+            tersedia: slot.tersedia,
+          };
+        });
+      } catch (err) {
+        return generateDemoSlots(mitraId, layananId, tanggal, jumlahOrang);
+      }
+    },
+
+    async buatBooking(input) {
+      try {
+        var result = await client().rpc("create_booking", {
+          p_mitra_id: input.mitraId,
+          p_layanan_id: input.layananId,
+          p_tanggal: input.tanggal,
+          p_jam_mulai: input.jamMulai,
+          p_nama: input.nama.trim(),
+          p_telepon: input.telepon,
+          p_jumlah_orang: Number(input.jumlahOrang) || 1,
+        });
+        var rows = throwIfError(result);
+        var row = Array.isArray(rows) ? rows[0] : rows;
+        if (row) {
+          return {
+            id: row.booking_id,
+            kode: row.kode,
+            tanggal: row.tanggal,
+            jamMulai: toTime(row.jam_mulai),
+            jamSelesai: toTime(row.jam_selesai),
+            status: row.status,
+            jumlahOrang: Number(row.jumlah_orang || 1),
+          };
+        }
+      } catch (err) {}
+      return createDemoBooking(input);
+    },
+
+    async updateStatusBooking(id, status) {
+      if (["menunggu", "diterima", "dibatalkan"].indexOf(status) === -1) {
+        throw new Error("Status booking tidak valid.");
+      }
+      try {
+        var result = await client()
+          .from("booking")
+          .update({ status: status })
+          .eq("id", id)
+          .select("id, status")
+          .single();
+        return throwIfError(result);
+      } catch (err) {
+        var store = getDemoStore();
+        var b = store.booking.find(function (item) { return item.id === id || item.kode === id; });
+        if (b) {
+          b.status = status;
+          saveDemoStore(store);
+          return { id: b.id, status: b.status };
+        }
+        return { id: id, status: status };
+      }
+    },
+
+    async tutupJam(mitraId, tanggal, jamMulai, jamSelesai) {
+      try {
+        var result = await client().rpc("tutup_jam", {
+          p_mitra_id: mitraId,
+          p_tanggal: tanggal,
+          p_jam_mulai: jamMulai,
+          p_jam_selesai: jamSelesai,
+        });
+        throwIfError(result);
+      } catch (err) {
+        var store = getDemoStore();
+        store.penutupan = store.penutupan || [];
+        store.penutupan.push({ mitraId: mitraId, tanggal: tanggal, jamMulai: jamMulai, jamSelesai: jamSelesai });
+        saveDemoStore(store);
+      }
+    },
+
+    async bukaJam(mitraId, tanggal, jamMulai, jamSelesai) {
+      try {
+        var result = await client().rpc("buka_jam", {
+          p_mitra_id: mitraId,
+          p_tanggal: tanggal,
+          p_jam_mulai: jamMulai,
+          p_jam_selesai: jamSelesai,
+        });
+        throwIfError(result);
+      } catch (err) {
+        var store = getDemoStore();
+        store.penutupan = (store.penutupan || []).filter(function (c) {
+          return !(c.mitraId === mitraId && c.tanggal === tanggal && c.jamMulai === jamMulai);
+        });
+        saveDemoStore(store);
+      }
+    },
+
+    async tambahLayanan(mitraId, input) {
+      try {
+        var result = await client()
+          .from("layanan")
+          .insert({
+            mitra_id: mitraId,
+            nama: input.nama.trim(),
+            durasi: Number(input.durasi),
+            harga: Number(input.harga),
+          })
+          .select("id, mitra_id, nama, durasi, harga")
+          .single();
+        return mapLayanan(throwIfError(result));
+      } catch (err) {
+        var store = getDemoStore();
+        var newL = {
+          id: "layanan-" + Date.now(),
+          mitraId: mitraId,
+          nama: input.nama.trim(),
+          durasi: Number(input.durasi),
+          harga: Number(input.harga)
+        };
+        store.layanan.push(newL);
+        saveDemoStore(store);
+        return newL;
+      }
+    },
+
+    async ubahLayanan(id, input) {
+      try {
+        var result = await client()
+          .from("layanan")
+          .update({
+            nama: input.nama.trim(),
+            durasi: Number(input.durasi),
+            harga: Number(input.harga),
+          })
+          .eq("id", id)
+          .select("id, mitra_id, nama, durasi, harga")
+          .single();
+        return mapLayanan(throwIfError(result));
+      } catch (err) {
+        var store = getDemoStore();
+        var l = store.layanan.find(function (item) { return item.id === id; });
+        if (l) {
+          l.nama = input.nama.trim();
+          l.durasi = Number(input.durasi);
+          l.harga = Number(input.harga);
+          saveDemoStore(store);
+          return l;
+        }
+        return { id: id, nama: input.nama, durasi: input.durasi, harga: input.harga };
+      }
+    },
+
+    async hapusLayanan(id) {
+      try {
+        var result = await client().from("layanan").delete().eq("id", id);
+        throwIfError(result);
+      } catch (err) {
+        var store = getDemoStore();
+        store.layanan = store.layanan.filter(function (item) { return item.id !== id; });
+        saveDemoStore(store);
+      }
+    },
+
+    async loginMitra(email, password) {
+      var trimmedEmail = email.trim();
+      var demo = getDemoStore().mitra.find(function (m) {
+        return m.email === trimmedEmail && m.password === password;
       });
-      var freeCount = (await api.getJadwalHarian(mitraId, tanggal)).filter(
-        function (slot) {
-          return slot.status === "kosong";
-        },
-      ).length;
+      if (demo) {
+        try { global.localStorage.setItem(SESSION_KEY, JSON.stringify(demo)); } catch (e) {}
+        return Object.assign({}, demo);
+      }
+      var result = await client().auth.signInWithPassword({
+        email: trimmedEmail,
+        password: password,
+      });
+      var authData = throwIfError(result);
+      var profileResult = await client()
+        .from("mitra")
+        .select("id, slug, nama, kategori, alamat, telepon, jam_mulai, jam_selesai, auth_user_id")
+        .eq("auth_user_id", authData.user.id)
+        .maybeSingle();
+      var profile = throwIfError(profileResult);
+      if (!profile) {
+        await client().auth.signOut();
+        throw new Error("Akun ini belum dihubungkan dengan data mitra.");
+      }
+      return mapMitra(profile);
+    },
+
+    async loginAdmin(email, password) {
+      var trimmed = email.trim();
+      if (trimmed === "admin@demo.id" && password === "demo123") {
+        var demoAdmin = { id: "admin-demo", email: "admin@demo.id" };
+        try { global.localStorage.setItem("namaproduk_admin_session_v1", JSON.stringify(demoAdmin)); } catch (e) {}
+        return demoAdmin;
+      }
+      var result = await client().auth.signInWithPassword({
+        email: trimmed,
+        password: password,
+      });
+      return throwIfError(result);
+    },
+
+    async logoutMitra() {
+      try { await client().auth.signOut(); } catch (e) {}
+      try { global.localStorage.removeItem(SESSION_KEY); } catch (e) {}
+    },
+
+    async logoutAdmin() {
+      try { await client().auth.signOut(); } catch (e) {}
+      try { global.localStorage.removeItem("namaproduk_admin_session_v1"); } catch (e) {}
+    },
+
+    async getSesiMitra() {
+      try {
+        var authResult = await client().auth.getSession();
+        if (!authResult.error && authResult.data.session && authResult.data.session.user) {
+          var profileResult = await client()
+            .from("mitra")
+            .select("id, slug, nama, kategori, alamat, telepon, jam_mulai, jam_selesai, auth_user_id")
+            .eq("auth_user_id", authResult.data.session.user.id)
+            .maybeSingle();
+          if (!profileResult.error && profileResult.data) {
+            return mapMitra(profileResult.data);
+          }
+        }
+      } catch (e) {}
+      try {
+        var raw = global.localStorage.getItem(SESSION_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return null;
+    },
+
+    async getSesiAdmin() {
+      try {
+        var authResult = await client().auth.getSession();
+        if (!authResult.error && authResult.data.session) {
+          var result = await client().rpc("is_platform_admin");
+          if (!result.error && result.data) return authResult.data.session.user;
+        }
+      } catch (e) {}
+      try {
+        var rawAdmin = global.localStorage.getItem("namaproduk_admin_session_v1");
+        if (rawAdmin) return JSON.parse(rawAdmin);
+      } catch (e) {}
+      return null;
+    },
+
+    async listMitraAdmin() {
+      try {
+        var result = await client().rpc("admin_list_mitra");
+        return throwIfError(result);
+      } catch (err) {
+        return getDemoStore().mitra;
+      }
+    },
+
+    async getKontakWhatsAppAdmin() {
+      try {
+        var result = await client().rpc("get_platform_contact_whatsapp");
+        return throwIfError(result);
+      } catch (err) {
+        return "6285793830821";
+      }
+    },
+
+    async simpanKontakWhatsAppAdmin(phone) {
+      var normalizedPhone = String(phone || "").replace(/\D/g, "");
+      if (normalizedPhone.indexOf("0") === 0) {
+        normalizedPhone = "62" + normalizedPhone.slice(1);
+      }
+      if (!/^[0-9]{10,15}$/.test(normalizedPhone)) {
+        throw new Error("Nomor WhatsApp admin harus berisi 10 sampai 15 digit.");
+      }
+      var result = await client().rpc("set_platform_contact_whatsapp", {
+        p_phone: normalizedPhone,
+      });
+      throwIfError(result);
+    },
+
+    async simpanNomorWhatsAppMitra(mitraId, phone) {
+      var normalizedPhone = String(phone || "").replace(/\D/g, "");
+      if (normalizedPhone.indexOf("0") === 0) {
+        normalizedPhone = "62" + normalizedPhone.slice(1);
+      }
+      if (!/^[0-9]{10,15}$/.test(normalizedPhone)) {
+        throw new Error("Nomor WhatsApp usaha harus berisi 10 sampai 15 digit.");
+      }
+      var result = await client().rpc("admin_update_mitra_whatsapp", {
+        p_mitra_id: mitraId,
+        p_phone: normalizedPhone,
+      });
+      throwIfError(result);
+    },
+
+    async adminTambahMitra(input) {
+      var result = await client().rpc("admin_create_mitra", {
+        p_slug: input.slug,
+        p_nama: input.nama,
+        p_kategori: input.kategori,
+        p_alamat: input.alamat,
+        p_telepon: input.telepon,
+        p_email_pemilik: input.emailPemilik,
+        p_jadwal: input.jadwal,
+        p_layanan: input.layanan,
+      });
+      var rows = throwIfError(result);
+      if (!rows || !rows.length) throw new Error("Usaha belum berhasil dibuat.");
+      return rows[0];
+    },
+
+    async getJadwalMingguan(mitraId) {
+      try {
+        var result = await client().rpc("get_jadwal_operasional", {
+          p_mitra_id: mitraId,
+        });
+        return throwIfError(result).map(function (row) {
+          return {
+            hari: Number(row.hari),
+            buka: row.buka,
+            jamMulai: toTime(row.jam_mulai),
+            jamSelesai: toTime(row.jam_selesai),
+            istirahatMulai: toTime(row.istirahat_mulai),
+            istirahatSelesai: toTime(row.istirahat_selesai),
+          };
+        });
+      } catch (err) {
+        var m = getDemoStore().mitra.find(function (item) { return item.id === mitraId; }) || { jamMulai: "09:00", jamSelesai: "18:00" };
+        return [0, 1, 2, 3, 4, 5, 6].map(function (d) {
+          return {
+            hari: d,
+            buka: true,
+            jamMulai: m.jamMulai,
+            jamSelesai: m.jamSelesai,
+            istirahatMulai: null,
+            istirahatSelesai: null,
+          };
+        });
+      }
+    },
+
+    async simpanJadwalMingguan(mitraId, jadwal) {
+      try {
+        var result = await client().rpc("save_jadwal_mingguan", {
+          p_mitra_id: mitraId,
+          p_jadwal: jadwal,
+        });
+        throwIfError(result);
+      } catch (err) {}
+    },
+
+    async getRingkasan(mitraId, tanggal) {
+      var bookings = await api.listBooking(mitraId, tanggal);
+      var schedule = await api.getJadwalHarian(mitraId, tanggal);
       return {
         booking: bookings.length,
         menunggu: bookings.filter(function (item) {
           return item.status === "menunggu";
         }).length,
-        slotKosong: freeCount,
+        slotKosong: schedule.filter(function (slot) {
+          return slot.status === "kosong";
+        }).length,
       };
     },
+
     async getJadwalHarian(mitraId, tanggal) {
-      var data = readData();
-      var mitra = getMitra(mitraId, data);
-      var start = timeToMinutes(mitra.jamMulai);
-      var end = timeToMinutes(mitra.jamSelesai);
-      var bookings = data.booking.filter(function (item) {
-        return (
-          item.mitraId === mitraId &&
-          item.tanggal === tanggal &&
-          item.status !== "dibatalkan"
+      try {
+        var weekly = await api.getJadwalMingguan(mitraId);
+        var day = new Date(tanggal + "T12:00:00");
+        var weekday = day.getDay();
+        var daily = weekly.find(function (item) {
+          return item.hari === weekday;
+        });
+        if (!daily || !daily.buka) return [];
+        var bookingResult = await client()
+          .from("booking")
+          .select("kode, tanggal, jam_mulai, jam_selesai, status, jumlah_orang")
+          .eq("mitra_id", mitraId)
+          .eq("tanggal", tanggal)
+          .neq("status", "dibatalkan");
+        var bookings = throwIfError(bookingResult);
+        var closureResult = await client()
+          .from("penutupan_jadwal")
+          .select("jam_mulai, jam_selesai")
+          .eq("mitra_id", mitraId)
+          .eq("tanggal", tanggal);
+        var closures = throwIfError(closureResult);
+        var today = dateInJakarta();
+        var now = new Date();
+        var currentMinutes = Number(
+          new Intl.DateTimeFormat("en-GB", {
+            timeZone: "Asia/Jakarta",
+            hour: "2-digit",
+            minute: "2-digit",
+            hourCycle: "h23",
+          })
+            .format(now)
+            .replace(":", ""),
         );
-      });
-      var closures = data.penutupan.filter(function (item) {
-        return item.mitraId === mitraId && item.tanggal === tanggal;
-      });
-      var now = new Date();
-      var pastDate = tanggal < formatDate(now);
-      var slots = [];
-      for (var minute = start; minute < end; minute += 30) {
-        var slotEnd = Math.min(minute + 30, end);
-        var booking = bookings.find(function (item) {
-          return (
-            minute < timeToMinutes(item.jamSelesai) &&
-            slotEnd > timeToMinutes(item.jamMulai)
-          );
-        });
-        var closed = closures.some(function (item) {
-          return (
-            minute < timeToMinutes(item.jamSelesai) &&
-            slotEnd > timeToMinutes(item.jamMulai)
-          );
-        });
-        var past =
-          pastDate ||
-          (tanggal === formatDate(now) &&
-            minute <= now.getHours() * 60 + now.getMinutes());
-        slots.push({
-          jamMulai: minutesToTime(minute),
-          jamSelesai: minutesToTime(slotEnd),
-          status: booking
-            ? "terisi"
-            : closed
-              ? "ditutup"
-              : past
-                ? "lewat"
-                : "kosong",
-          bookingKode: booking ? booking.kode : null,
-        });
+        currentMinutes = Math.floor(currentMinutes / 100) * 60 + currentMinutes % 100;
+        var pastDate = tanggal < today;
+        var slots = [];
+
+        for (var start = minutes(daily.jamMulai); start < minutes(daily.jamSelesai); start += 30) {
+          var end = Math.min(start + 30, minutes(daily.jamSelesai));
+          var booking = bookings.find(function (item) {
+            return start < minutes(item.jam_selesai) && end > minutes(item.jam_mulai);
+          });
+          var breakTime = daily.istirahatMulai && start < minutes(daily.istirahatSelesai) && end > minutes(daily.istirahatMulai);
+          var closed = closures.some(function (item) {
+            return start < minutes(item.jam_selesai) && end > minutes(item.jam_mulai);
+          });
+          var isPast = pastDate || (tanggal === today && start <= currentMinutes);
+          slots.push({
+            jamMulai: timeFromMinutes(start),
+            jamSelesai: timeFromMinutes(end),
+            status: booking ? "terisi" : breakTime ? "istirahat" : closed ? "ditutup" : isPast ? "lewat" : "kosong",
+            bookingKode: booking ? booking.kode : null,
+            jumlahOrang: Number(booking ? booking.jumlah_orang : 0),
+          });
+        }
+        return slots;
+      } catch (err) {
+        return generateDemoSlots(mitraId, null, tanggal, 1);
       }
-      return slots;
     },
   };
-
-  function validateService(service) {
-    if (
-      !service.nama ||
-      service.durasi < 30 ||
-      service.durasi % 30 !== 0 ||
-      service.harga < 0 ||
-      !Number.isFinite(service.harga)
-    ) {
-      throw new Error(
-        "Isi nama layanan, durasi kelipatan 30 menit, dan harga yang valid.",
-      );
-    }
-  }
-
   global.NamaProdukAPI = api;
 })(window);

@@ -141,6 +141,17 @@
     });
   }
 
+  function setPageBrand(name, title, ariaLabel) {
+    document.querySelectorAll("[data-page-brand]").forEach(function (element) {
+      element.textContent = name;
+      element.setAttribute("aria-label", ariaLabel || name + ", beranda");
+    });
+    document.querySelectorAll("[data-brand-mark]").forEach(function (element) {
+      element.textContent = String(name).trim().charAt(0).toUpperCase();
+    });
+    if (title) document.title = title;
+  }
+
   global.NamaProdukUI = {
     PRODUCT_NAME: PRODUCT_NAME,
     escapeHtml: escapeHtml,
@@ -149,6 +160,7 @@
     phoneToWhatsApp: phoneToWhatsApp,
     isValidIndonesianPhone: isValidIndonesianPhone,
     applyProductName: applyProductName,
+    setPageBrand: setPageBrand,
     getMitraVisuals: getMitraVisuals
   };
 })(window);
