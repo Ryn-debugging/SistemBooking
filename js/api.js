@@ -87,6 +87,78 @@
   }
 
   /* Demo / Fallback Store */
+  function shiftDate(baseDate, offsetDays) {
+    var parts = baseDate.split("-").map(Number);
+    var d = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
+    d.setUTCDate(d.getUTCDate() + offsetDays);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function generateSampleBookings() {
+    var todayStr = dateInJakarta();
+    var bookings = [
+      // Hari ini (Barbershop Rapi)
+      { id: "bk-rapi-01", kode: "BY-8821", mitraId: "mitra-rapi", layananId: "layanan-rapi-2", layananNama: "Potong + keramas", durasi: 60, jumlahOrang: 1, hargaLayanan: 55000, tanggal: todayStr, jamMulai: "10:00", jamSelesai: "11:00", nama: "Rizky Ramadhan", telepon: "081234567890", status: "diterima", dibuatPada: todayStr + "T08:15:00.000Z" },
+      { id: "bk-rapi-02", kode: "BY-7712", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: todayStr, jamMulai: "11:30", jamSelesai: "12:00", nama: "Dimas Prasetyo", telepon: "085712345678", status: "diterima", dibuatPada: todayStr + "T09:00:00.000Z" },
+      { id: "bk-rapi-03", kode: "BY-6623", mitraId: "mitra-rapi", layananId: "layanan-rapi-3", layananNama: "Rapikan jenggot", durasi: 30, jumlahOrang: 1, hargaLayanan: 25000, tanggal: todayStr, jamMulai: "13:00", jamSelesai: "13:30", nama: "Farhan Maulana", telepon: "081398765432", status: "menunggu", dibuatPada: todayStr + "T09:45:00.000Z" },
+      { id: "bk-rapi-04", kode: "BY-5534", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: todayStr, jamMulai: "14:00", jamSelesai: "14:30", nama: "Budi Santoso", telepon: "082155667788", status: "menunggu", dibuatPada: todayStr + "T10:10:00.000Z" },
+      { id: "bk-rapi-05", kode: "BY-4415", mitraId: "mitra-rapi", layananId: "layanan-rapi-2", layananNama: "Potong + keramas", durasi: 60, jumlahOrang: 1, hargaLayanan: 55000, tanggal: todayStr, jamMulai: "15:30", jamSelesai: "16:30", nama: "Kevin Ardiansyah", telepon: "087811223344", status: "diterima", dibuatPada: todayStr + "T10:30:00.000Z" },
+
+      // Kemarin (Hari -1)
+      { id: "bk-rapi-06", kode: "BY-3301", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -1), jamMulai: "09:30", jamSelesai: "10:00", nama: "Ahmad Fauzi", telepon: "081299887766", status: "diterima", dibuatPada: shiftDate(todayStr, -1) + "T08:00:00.000Z" },
+      { id: "bk-rapi-07", kode: "BY-3302", mitraId: "mitra-rapi", layananId: "layanan-rapi-2", layananNama: "Potong + keramas", durasi: 60, jumlahOrang: 1, hargaLayanan: 55000, tanggal: shiftDate(todayStr, -1), jamMulai: "11:00", jamSelesai: "12:00", nama: "Doni Pratama", telepon: "085611224455", status: "diterima", dibuatPada: shiftDate(todayStr, -1) + "T09:30:00.000Z" },
+      { id: "bk-rapi-08", kode: "BY-3303", mitraId: "mitra-rapi", layananId: "layanan-rapi-3", layananNama: "Rapikan jenggot", durasi: 30, jumlahOrang: 1, hargaLayanan: 25000, tanggal: shiftDate(todayStr, -1), jamMulai: "14:00", jamSelesai: "14:30", nama: "Rian Hidayat", telepon: "081822334455", status: "diterima", dibuatPada: shiftDate(todayStr, -1) + "T11:00:00.000Z" },
+      { id: "bk-rapi-09", kode: "BY-3304", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -1), jamMulai: "15:00", jamSelesai: "15:30", nama: "Fikri Ramli", telepon: "082233445566", status: "dibatalkan", dibuatPada: shiftDate(todayStr, -1) + "T13:00:00.000Z" },
+
+      // Hari -2
+      { id: "bk-rapi-10", kode: "BY-3201", mitraId: "mitra-rapi", layananId: "layanan-rapi-2", layananNama: "Potong + keramas", durasi: 60, jumlahOrang: 1, hargaLayanan: 55000, tanggal: shiftDate(todayStr, -2), jamMulai: "10:00", jamSelesai: "11:00", nama: "Gideon Halim", telepon: "081900112233", status: "diterima", dibuatPada: shiftDate(todayStr, -2) + "T09:00:00.000Z" },
+      { id: "bk-rapi-11", kode: "BY-3202", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -2), jamMulai: "11:30", jamSelesai: "12:00", nama: "Aris Munandar", telepon: "081277665544", status: "diterima", dibuatPada: shiftDate(todayStr, -2) + "T10:00:00.000Z" },
+      { id: "bk-rapi-12", kode: "BY-3203", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -2), jamMulai: "13:30", jamSelesai: "14:00", nama: "Bayu Wicaksono", telepon: "087788990011", status: "diterima", dibuatPada: shiftDate(todayStr, -2) + "T11:00:00.000Z" },
+      { id: "bk-rapi-13", kode: "BY-3204", mitraId: "mitra-rapi", layananId: "layanan-rapi-2", layananNama: "Potong + keramas", durasi: 60, jumlahOrang: 1, hargaLayanan: 55000, tanggal: shiftDate(todayStr, -2), jamMulai: "14:30", jamSelesai: "15:30", nama: "Surya Kencana", telepon: "081344556677", status: "diterima", dibuatPada: shiftDate(todayStr, -2) + "T12:00:00.000Z" },
+      { id: "bk-rapi-14", kode: "BY-3205", mitraId: "mitra-rapi", layananId: "layanan-rapi-3", layananNama: "Rapikan jenggot", durasi: 30, jumlahOrang: 1, hargaLayanan: 25000, tanggal: shiftDate(todayStr, -2), jamMulai: "16:00", jamSelesai: "16:30", nama: "Teguh Santika", telepon: "085699887766", status: "diterima", dibuatPada: shiftDate(todayStr, -2) + "T13:00:00.000Z" },
+      { id: "bk-rapi-15", kode: "BY-3206", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -2), jamMulai: "16:30", jamSelesai: "17:00", nama: "Fajar Nugraha", telepon: "081233445566", status: "dibatalkan", dibuatPada: shiftDate(todayStr, -2) + "T14:00:00.000Z" },
+
+      // Hari -3
+      { id: "bk-rapi-16", kode: "BY-3101", mitraId: "mitra-rapi", layananId: "layanan-rapi-2", layananNama: "Potong + keramas", durasi: 60, jumlahOrang: 1, hargaLayanan: 55000, tanggal: shiftDate(todayStr, -3), jamMulai: "10:30", jamSelesai: "11:30", nama: "Yudi Purnomo", telepon: "081122334455", status: "diterima", dibuatPada: shiftDate(todayStr, -3) + "T09:00:00.000Z" },
+      { id: "bk-rapi-17", kode: "BY-3102", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -3), jamMulai: "13:00", jamSelesai: "13:30", nama: "Wahyu Setiawan", telepon: "085233445566", status: "diterima", dibuatPada: shiftDate(todayStr, -3) + "T10:00:00.000Z" },
+      { id: "bk-rapi-18", kode: "BY-3103", mitraId: "mitra-rapi", layananId: "layanan-rapi-3", layananNama: "Rapikan jenggot", durasi: 30, jumlahOrang: 1, hargaLayanan: 25000, tanggal: shiftDate(todayStr, -3), jamMulai: "15:00", jamSelesai: "15:30", nama: "Galih Pratama", telepon: "081399887711", status: "diterima", dibuatPada: shiftDate(todayStr, -3) + "T11:00:00.000Z" },
+      { id: "bk-rapi-19", kode: "BY-3104", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -3), jamMulai: "16:00", jamSelesai: "16:30", nama: "Indra Kusuma", telepon: "087811992288", status: "diterima", dibuatPada: shiftDate(todayStr, -3) + "T12:00:00.000Z" },
+
+      // Hari -4
+      { id: "bk-rapi-20", kode: "BY-3001", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -4), jamMulai: "09:30", jamSelesai: "10:00", nama: "Rendi Saputra", telepon: "081255443322", status: "diterima", dibuatPada: shiftDate(todayStr, -4) + "T08:00:00.000Z" },
+      { id: "bk-rapi-21", kode: "BY-3002", mitraId: "mitra-rapi", layananId: "layanan-rapi-2", layananNama: "Potong + keramas", durasi: 60, jumlahOrang: 1, hargaLayanan: 55000, tanggal: shiftDate(todayStr, -4), jamMulai: "11:00", jamSelesai: "12:00", nama: "Satria Dewa", telepon: "085611778899", status: "diterima", dibuatPada: shiftDate(todayStr, -4) + "T09:00:00.000Z" },
+      { id: "bk-rapi-22", kode: "BY-3003", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -4), jamMulai: "14:00", jamSelesai: "14:30", nama: "Gilang Ramadhan", telepon: "081922334488", status: "diterima", dibuatPada: shiftDate(todayStr, -4) + "T10:00:00.000Z" },
+
+      // Hari -5
+      { id: "bk-rapi-23", kode: "BY-2901", mitraId: "mitra-rapi", layananId: "layanan-rapi-2", layananNama: "Potong + keramas", durasi: 60, jumlahOrang: 1, hargaLayanan: 55000, tanggal: shiftDate(todayStr, -5), jamMulai: "10:00", jamSelesai: "11:00", nama: "Dodi Kurnia", telepon: "081277889900", status: "diterima", dibuatPada: shiftDate(todayStr, -5) + "T09:00:00.000Z" },
+      { id: "bk-rapi-24", kode: "BY-2902", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -5), jamMulai: "11:30", jamSelesai: "12:00", nama: "Hendra Wijaya", telepon: "085733221100", status: "diterima", dibuatPada: shiftDate(todayStr, -5) + "T10:00:00.000Z" },
+      { id: "bk-rapi-25", kode: "BY-2903", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -5), jamMulai: "13:00", jamSelesai: "13:30", nama: "Alif Pratama", telepon: "081355667788", status: "diterima", dibuatPada: shiftDate(todayStr, -5) + "T11:00:00.000Z" },
+      { id: "bk-rapi-26", kode: "BY-2904", mitraId: "mitra-rapi", layananId: "layanan-rapi-3", layananNama: "Rapikan jenggot", durasi: 30, jumlahOrang: 1, hargaLayanan: 25000, tanggal: shiftDate(todayStr, -5), jamMulai: "14:00", jamSelesai: "14:30", nama: "Lukman Hakim", telepon: "087711223344", status: "diterima", dibuatPada: shiftDate(todayStr, -5) + "T12:00:00.000Z" },
+      { id: "bk-rapi-27", kode: "BY-2905", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -5), jamMulai: "15:00", jamSelesai: "15:30", nama: "Bima Arya", telepon: "082199887766", status: "diterima", dibuatPada: shiftDate(todayStr, -5) + "T13:00:00.000Z" },
+      { id: "bk-rapi-28", kode: "BY-2906", mitraId: "mitra-rapi", layananId: "layanan-rapi-2", layananNama: "Potong + keramas", durasi: 60, jumlahOrang: 1, hargaLayanan: 55000, tanggal: shiftDate(todayStr, -5), jamMulai: "16:00", jamSelesai: "17:00", nama: "Tommy Gunawan", telepon: "081244556677", status: "diterima", dibuatPada: shiftDate(todayStr, -5) + "T14:00:00.000Z" },
+
+      // Hari -6
+      { id: "bk-rapi-29", kode: "BY-2801", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -6), jamMulai: "10:00", jamSelesai: "10:30", nama: "Eko Prasetyo", telepon: "085622334455", status: "diterima", dibuatPada: shiftDate(todayStr, -6) + "T09:00:00.000Z" },
+      { id: "bk-rapi-30", kode: "BY-2802", mitraId: "mitra-rapi", layananId: "layanan-rapi-2", layananNama: "Potong + keramas", durasi: 60, jumlahOrang: 1, hargaLayanan: 55000, tanggal: shiftDate(todayStr, -6), jamMulai: "11:30", jamSelesai: "12:30", nama: "Rio Febrian", telepon: "081311447788", status: "diterima", dibuatPada: shiftDate(todayStr, -6) + "T10:00:00.000Z" },
+      { id: "bk-rapi-31", kode: "BY-2803", mitraId: "mitra-rapi", layananId: "layanan-rapi-1", layananNama: "Potong rambut", durasi: 30, jumlahOrang: 1, hargaLayanan: 35000, tanggal: shiftDate(todayStr, -6), jamMulai: "14:00", jamSelesai: "14:30", nama: "Panji Gumilang", telepon: "087833557799", status: "diterima", dibuatPada: shiftDate(todayStr, -6) + "T11:00:00.000Z" },
+      { id: "bk-rapi-32", kode: "BY-2804", mitraId: "mitra-rapi", layananId: "layanan-rapi-3", layananNama: "Rapikan jenggot", durasi: 30, jumlahOrang: 1, hargaLayanan: 25000, tanggal: shiftDate(todayStr, -6), jamMulai: "15:30", jamSelesai: "16:00", nama: "Rudy Hartono", telepon: "081944668800", status: "diterima", dibuatPada: shiftDate(todayStr, -6) + "T12:00:00.000Z" },
+
+      // Salon Senja
+      { id: "bk-senja-01", kode: "BY-9101", mitraId: "mitra-senja", layananId: "layanan-senja-1", layananNama: "Cuci dan blow", durasi: 60, jumlahOrang: 1, hargaLayanan: 45000, tanggal: todayStr, jamMulai: "11:00", jamSelesai: "12:00", nama: "Siti Rahmawati", telepon: "081288990011", status: "diterima", dibuatPada: todayStr + "T08:30:00.000Z" },
+      { id: "bk-senja-02", kode: "BY-9102", mitraId: "mitra-senja", layananId: "layanan-senja-2", layananNama: "Creambath", durasi: 90, jumlahOrang: 1, hargaLayanan: 75000, tanggal: todayStr, jamMulai: "13:30", jamSelesai: "15:00", nama: "Maya Anggraini", telepon: "085733445566", status: "menunggu", dibuatPada: todayStr + "T09:15:00.000Z" },
+      { id: "bk-senja-03", kode: "BY-9103", mitraId: "mitra-senja", layananId: "layanan-senja-3", layananNama: "Potong rambut", durasi: 60, jumlahOrang: 1, hargaLayanan: 40000, tanggal: todayStr, jamMulai: "16:00", jamSelesai: "17:00", nama: "Nadya Permata", telepon: "087899887766", status: "diterima", dibuatPada: todayStr + "T10:00:00.000Z" },
+      { id: "bk-senja-04", kode: "BY-9104", mitraId: "mitra-senja", layananId: "layanan-senja-2", layananNama: "Creambath", durasi: 90, jumlahOrang: 1, hargaLayanan: 75000, tanggal: shiftDate(todayStr, -1), jamMulai: "11:00", jamSelesai: "12:30", nama: "Tania Putri", telepon: "081322446688", status: "diterima", dibuatPada: shiftDate(todayStr, -1) + "T09:00:00.000Z" },
+      { id: "bk-senja-05", kode: "BY-9105", mitraId: "mitra-senja", layananId: "layanan-senja-1", layananNama: "Cuci dan blow", durasi: 60, jumlahOrang: 1, hargaLayanan: 45000, tanggal: shiftDate(todayStr, -1), jamMulai: "14:00", jamSelesai: "15:00", nama: "Bella Safira", telepon: "085699775533", status: "diterima", dibuatPada: shiftDate(todayStr, -1) + "T10:00:00.000Z" },
+
+      // Laundry Bersih
+      { id: "bk-bersih-01", kode: "BY-8101", mitraId: "mitra-bersih", layananId: "layanan-bersih-2", layananNama: "Cuci express", durasi: 60, jumlahOrang: 2, hargaLayanan: 15000, tanggal: todayStr, jamMulai: "09:00", jamSelesai: "10:00", nama: "Dewi Lestari", telepon: "081311223344", status: "diterima", dibuatPada: todayStr + "T08:00:00.000Z" },
+      { id: "bk-bersih-02", kode: "BY-8102", mitraId: "mitra-bersih", layananId: "layanan-bersih-1", layananNama: "Cuci dan setrika (reguler)", durasi: 60, jumlahOrang: 1, hargaLayanan: 8000, tanggal: todayStr, jamMulai: "11:00", jamSelesai: "12:00", nama: "Bambang Pamungkas", telepon: "082144556677", status: "menunggu", dibuatPada: todayStr + "T09:30:00.000Z" },
+      { id: "bk-bersih-03", kode: "BY-8103", mitraId: "mitra-bersih", layananId: "layanan-bersih-3", layananNama: "Setrika saja", durasi: 30, jumlahOrang: 1, hargaLayanan: 6000, tanggal: todayStr, jamMulai: "14:00", jamSelesai: "14:30", nama: "Citra Kirana", telepon: "085677889900", status: "diterima", dibuatPada: todayStr + "T10:00:00.000Z" },
+      { id: "bk-bersih-04", kode: "BY-8104", mitraId: "mitra-bersih", layananId: "layanan-bersih-1", layananNama: "Cuci dan setrika (reguler)", durasi: 60, jumlahOrang: 1, hargaLayanan: 8000, tanggal: shiftDate(todayStr, -1), jamMulai: "10:00", jamSelesai: "11:00", nama: "Hadi Pranoto", telepon: "087811335577", status: "diterima", dibuatPada: shiftDate(todayStr, -1) + "T09:00:00.000Z" }
+    ];
+    return bookings;
+  }
+
   function createSeed() {
     var barbershop = {
       id: "mitra-rapi",
@@ -136,7 +208,7 @@
       { id: "layanan-senja-2", mitraId: salon.id, nama: "Creambath", durasi: 90, harga: 75000 },
       { id: "layanan-senja-3", mitraId: salon.id, nama: "Potong rambut", durasi: 60, harga: 40000 }
     ];
-    return { mitra: mitraList, layanan: layananList, booking: [], penutupan: [] };
+    return { mitra: mitraList, layanan: layananList, booking: generateSampleBookings(), penutupan: [] };
   }
 
   function getDemoStore() {
@@ -147,7 +219,12 @@
         global.localStorage.setItem(DATA_KEY, JSON.stringify(seed));
         return seed;
       }
-      return JSON.parse(raw);
+      var store = JSON.parse(raw);
+      if (!store.booking || store.booking.length === 0) {
+        store.booking = generateSampleBookings();
+        global.localStorage.setItem(DATA_KEY, JSON.stringify(store));
+      }
+      return store;
     } catch (e) {
       return createSeed();
     }
@@ -804,6 +881,7 @@
         return generateDemoSlots(mitraId, null, tanggal, 1);
       }
     },
+    getDemoStore: getDemoStore,
   };
   global.NamaProdukAPI = api;
 })(window);

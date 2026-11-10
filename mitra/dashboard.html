@@ -7,94 +7,386 @@
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/dashboard.css">
   <link rel="stylesheet" href="../css/theme-soft.css">
 </head>
-<body>
-  <header class="site-header"><div class="container header-inner"><a class="brand" href="../index.html" data-page-brand="Nama usaha" aria-label="Nama usaha, beranda"><span class="brand-mark" data-brand-mark aria-hidden="true">U</span><span>Nama usaha</span></a><div class="header-actions"><button class="button button-secondary button-small" id="logout-button" type="button">Keluar</button></div></div></header>
+<body class="dashboard-body-green">
+  <!-- Top Navigation Bar -->
+  <header class="site-header dashboard-header">
+    <div class="container header-inner">
+      <div class="header-left-cluster">
+        <a class="brand brand-header" href="../index.html" aria-label="BookingYukk!, kembali ke beranda">
+          <span class="brand-logo-icon">⚡</span>
+          <span class="brand-text">Booking<strong>Yukk!</strong></span>
+          <span class="brand-badge-pill">Portal Mitra</span>
+        </a>
+
+        <!-- Quick Demo Partner Switcher -->
+        <div class="demo-partner-switcher" aria-label="Pilih akun mitra demo">
+          <span class="switcher-prompt">Akun Mitra:</span>
+          <button type="button" class="partner-switch-chip" data-switch-slug="barbershop-rapi" title="Beralih ke Barbershop Rapi">
+            <span class="chip-emoji">💈</span> Barbershop Rapi
+          </button>
+          <button type="button" class="partner-switch-chip" data-switch-slug="salon-senja" title="Beralih ke Salon Senja">
+            <span class="chip-emoji">💇</span> Salon Senja
+          </button>
+          <button type="button" class="partner-switch-chip" data-switch-slug="laundry-bersih" title="Beralih ke Laundry Bersih">
+            <span class="chip-emoji">🧺</span> Laundry Bersih
+          </button>
+        </div>
+      </div>
+
+      <div class="header-right-cluster">
+        <!-- Partner Badge & Avatar -->
+        <div class="header-partner-pill">
+          <span class="partner-avatar" data-brand-mark aria-hidden="true">B</span>
+          <div class="partner-info">
+            <strong class="partner-title" data-page-brand>Barbershop Rapi</strong>
+            <span class="partner-status-tag"><span class="pulse-indicator"></span> Buka Hari Ini</span>
+          </div>
+        </div>
+
+        <button class="button button-logout" id="logout-button" type="button" title="Keluar dari sesi mitra">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          <span>Keluar</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
   <main class="container dashboard-main">
     <div id="dashboard-error" class="notice notice-error" role="alert" hidden></div>
-    <section class="dashboard-title"><div><p class="eyebrow">Dashboard mitra</p><h1 id="dashboard-business-name">Ringkasan usaha</h1><p>Kelola booking, jadwal, dan layanan usaha kamu.</p></div><div class="dashboard-title-actions"><a class="text-link" id="public-booking-link" href="../index.html" target="_blank" rel="noopener noreferrer">Lihat halaman booking</a><a class="button button-secondary button-small" id="contact-admin-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Hubungi pengelola platform</a></div></section>
-    <section class="dashboard-information" aria-labelledby="information-heading">
-      <div class="information-heading"><div><h2 id="information-heading">Informasi hari ini</h2><p>Ringkasan diperbarui saat data booking atau jadwal berubah.</p></div><span class="realtime-status" id="realtime-status" role="status">Menghubungkan pembaruan langsung…</span></div>
-      <div class="stats-grid" aria-label="Ringkasan hari ini">
-        <article class="stat-card"><span>Total booking hari ini</span><strong id="stat-bookings">—</strong></article>
-        <article class="stat-card"><span>Estimasi pendapatan diterima</span><strong id="stat-revenue">—</strong></article>
-        <article class="stat-card"><span>Menunggu konfirmasi</span><strong id="stat-pending">—</strong></article>
-        <article class="stat-card"><span>Slot kosong hari ini</span><strong id="stat-available">—</strong></article>
+
+    <!-- Hero Emerald Banner -->
+    <section class="dashboard-hero-card">
+      <div class="hero-card-glow-1" aria-hidden="true"></div>
+      <div class="hero-card-glow-2" aria-hidden="true"></div>
+      
+      <div class="hero-card-content">
+        <div class="hero-card-text">
+          <div class="hero-card-kicker">
+            <span class="kicker-spark">✨</span> Mode Mitra Terverifikasi · Real-Time Dashboard
+          </div>
+          <h1 class="hero-card-title">
+            Ringkasan Operasional <span id="dashboard-business-name">Barbershop Rapi</span>
+          </h1>
+          <p class="hero-card-desc">
+            Pantau reservasi pelanggan secara real-time, kelola ketersediaan jam buka &amp; tutup slot 30 menit, dan konfirmasi pelanggan via WhatsApp secara instan.
+          </p>
+        </div>
+
+        <div class="hero-card-actions">
+          <div class="hero-status-row">
+            <span class="realtime-status is-connected" id="realtime-status" role="status">
+              <span class="pulse-indicator"></span> Pembaruan Langsung Aktif
+            </span>
+          </div>
+          <div class="hero-buttons-row">
+            <a class="button button-hero-primary" id="public-booking-link" href="../index.html" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              <span>Halaman Booking Publik</span>
+            </a>
+            <a class="button button-hero-secondary" id="contact-admin-link" href="#" target="_blank" rel="noopener noreferrer" hidden>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              <span>WhatsApp Admin</span>
+            </a>
+          </div>
+        </div>
       </div>
-      <p class="stats-footnote">Estimasi pendapatan menghitung booking diterima hari ini berdasarkan harga layanan saat ini, bukan laporan pembayaran.</p>
     </section>
+
+    <!-- KPI Statistics (4 Glowing Cards) -->
+    <section class="dashboard-information" aria-labelledby="information-heading">
+      <div class="section-heading-row">
+        <div>
+          <h2 id="information-heading" class="section-title">Informasi Operasional Hari Ini</h2>
+          <p class="section-desc">Data live diperbarui otomatis setiap ada pemesanan baru, perubahan status, atau jadwal.</p>
+        </div>
+      </div>
+
+      <div class="stats-grid" aria-label="Ringkasan hari ini">
+        <!-- Stat 1: Total Booking -->
+        <article class="stat-card">
+          <div class="stat-card-head">
+            <span class="stat-card-icon stat-icon-calendar" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            </span>
+            <span class="stat-card-badge stat-badge-green">Hari Ini</span>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-label">Total Booking Masuk</span>
+            <strong id="stat-bookings" class="stat-card-number">—</strong>
+          </div>
+          <span class="stat-card-foot">Reservasi tercatat pada jadwal hari ini</span>
+        </article>
+
+        <!-- Stat 2: Estimasi Pendapatan -->
+        <article class="stat-card">
+          <div class="stat-card-head">
+            <span class="stat-card-icon stat-icon-revenue" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            </span>
+            <span class="stat-card-badge stat-badge-emerald">Disetujui</span>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-label">Estimasi Omzet Diterima</span>
+            <strong id="stat-revenue" class="stat-card-number">—</strong>
+          </div>
+          <span class="stat-card-foot">Total pendapatan dari booking diterima</span>
+        </article>
+
+        <!-- Stat 3: Menunggu Konfirmasi -->
+        <article class="stat-card stat-card-highlight">
+          <div class="stat-card-head">
+            <span class="stat-card-icon stat-icon-pending" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </span>
+            <span class="stat-card-badge stat-badge-amber">Perlu Respon</span>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-label">Menunggu Konfirmasi</span>
+            <strong id="stat-pending" class="stat-card-number">—</strong>
+          </div>
+          <span class="stat-card-foot">Pelanggan menunggu konfirmasi respon kamu</span>
+        </article>
+
+        <!-- Stat 4: Slot Kosong -->
+        <article class="stat-card">
+          <div class="stat-card-head">
+            <span class="stat-card-icon stat-icon-available" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </span>
+            <span class="stat-card-badge stat-badge-lime">Tersedia</span>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-label">Slot Kosong Hari Ini</span>
+            <strong id="stat-available" class="stat-card-number">—</strong>
+          </div>
+          <span class="stat-card-foot">Slot 30 menit siap dipesan di jam kerja</span>
+        </article>
+      </div>
+
+      <p class="stats-footnote">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        Estimasi omzet dihitung otomatis dari booking diterima hari ini berdasarkan harga layanan saat ini, bukan laporan pembayaran langsung.
+      </p>
+    </section>
+
+    <!-- Main Navigation Pill Tabs -->
     <nav class="dashboard-tabs" role="tablist" aria-label="Navigasi dashboard mitra">
-      <button class="tab-button is-active" id="tab-overview" role="tab" type="button" data-tab="overview" aria-controls="panel-overview" aria-selected="true">Dashboard</button>
-      <button class="tab-button" id="tab-bookings" role="tab" type="button" data-tab="bookings" aria-controls="panel-bookings" aria-selected="false" tabindex="-1">Manajemen booking</button>
-      <button class="tab-button" id="tab-schedule" role="tab" type="button" data-tab="schedule" aria-controls="panel-schedule" aria-selected="false" tabindex="-1">Jadwal harian</button>
-      <button class="tab-button" id="tab-customers" role="tab" type="button" data-tab="customers" aria-controls="panel-customers" aria-selected="false" tabindex="-1">Pelanggan</button>
-      <button class="tab-button" id="tab-services" role="tab" type="button" data-tab="services" aria-controls="panel-services" aria-selected="false" tabindex="-1">Layanan &amp; harga</button>
+      <button class="tab-button is-active" id="tab-overview" role="tab" type="button" data-tab="overview" aria-controls="panel-overview" aria-selected="true">
+        <span class="tab-icon">📊</span>
+        <span>Ringkasan &amp; Tren</span>
+      </button>
+      <button class="tab-button" id="tab-bookings" role="tab" type="button" data-tab="bookings" aria-controls="panel-bookings" aria-selected="false" tabindex="-1">
+        <span class="tab-icon">📋</span>
+        <span>Manajemen Booking</span>
+      </button>
+      <button class="tab-button" id="tab-schedule" role="tab" type="button" data-tab="schedule" aria-controls="panel-schedule" aria-selected="false" tabindex="-1">
+        <span class="tab-icon">⏰</span>
+        <span>Jadwal Harian &amp; Jam Buka</span>
+      </button>
+      <button class="tab-button" id="tab-customers" role="tab" type="button" data-tab="customers" aria-controls="panel-customers" aria-selected="false" tabindex="-1">
+        <span class="tab-icon">👥</span>
+        <span>Pelanggan &amp; WhatsApp</span>
+      </button>
+      <button class="tab-button" id="tab-services" role="tab" type="button" data-tab="services" aria-controls="panel-services" aria-selected="false" tabindex="-1">
+        <span class="tab-icon">🏷️</span>
+        <span>Layanan &amp; Harga</span>
+      </button>
     </nav>
+
+    <!-- TAB 1: OVERVIEW -->
     <section class="dashboard-panel overview-grid" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
-      <article class="overview-card">
-        <div class="panel-heading"><div><h2 id="overview-heading">Tren booking mingguan</h2><p>Jumlah booking per hari, termasuk hari ini.</p></div></div>
+      <article class="overview-card overview-chart-card">
+        <div class="panel-heading">
+          <div>
+            <h2 id="overview-heading">Tren Booking Mingguan</h2>
+            <p>Distribusi jumlah booking per hari selama 7 hari terakhir.</p>
+          </div>
+          <span class="panel-badge-pill">7 Hari Terakhir</span>
+        </div>
         <div id="weekly-trend" class="weekly-trend" aria-live="polite"></div>
       </article>
-      <article class="overview-card">
-        <div class="panel-heading"><div><h2>Rasio status reservasi</h2><p id="status-period">Status booking 7 hari terakhir.</p></div></div>
+
+      <article class="overview-card overview-ratio-card">
+        <div class="panel-heading">
+          <div>
+            <h2>Rasio Status Reservasi</h2>
+            <p id="status-period">Komposisi status booking 7 hari terakhir.</p>
+          </div>
+        </div>
         <div id="status-ratio" class="status-ratio" aria-live="polite"></div>
       </article>
+
       <article class="overview-card overview-recent">
-        <div class="panel-heading"><div><h2>Booking terbaru</h2><p>Permintaan booking yang paling baru diterima.</p></div></div>
+        <div class="panel-heading">
+          <div>
+            <h2>Booking Terbaru Masuk</h2>
+            <p>Permintaan reservasi pelanggan terkini yang memerlukan tindakan kamu.</p>
+          </div>
+        </div>
         <div id="recent-bookings" class="booking-list"></div>
       </article>
     </section>
+
+    <!-- TAB 2: MANAJEMEN BOOKING -->
     <section class="dashboard-panel" id="panel-bookings" role="tabpanel" aria-labelledby="tab-bookings" hidden>
-      <div class="panel-heading"><div><h2 id="bookings-heading">Manajemen booking</h2><p>Filter berdasarkan tanggal dan status, lalu cari nama pelanggan atau kode booking.</p></div></div>
-      <div class="booking-filters">
-        <label for="booking-date-mode">Rentang tanggal</label>
-        <select id="booking-date-mode"><option value="all">Semua tanggal</option><option value="selected">Tanggal tertentu</option></select>
-        <label for="booking-date">Tanggal</label><input id="booking-date" type="date" disabled>
-        <label for="booking-status">Status</label>
-        <select id="booking-status"><option value="semua">Semua status</option><option value="menunggu">Menunggu</option><option value="diterima">Diterima</option><option value="dibatalkan">Dibatalkan</option></select>
-        <label for="booking-search">Cari booking</label><input id="booking-search" type="search" placeholder="Nama pelanggan atau kode">
+      <div class="panel-heading">
+        <div>
+          <h2 id="bookings-heading">Manajemen Booking Pelanggan</h2>
+          <p>Filter berdasarkan tanggal dan status, lalu cari nama pelanggan atau kode booking.</p>
+        </div>
       </div>
-      <p class="booking-result-count" id="booking-result-count" aria-live="polite"></p>
+      
+      <div class="booking-filters">
+        <div class="filter-field">
+          <label for="booking-date-mode">Rentang Tanggal</label>
+          <select id="booking-date-mode" class="styled-select">
+            <option value="all">Semua Tanggal</option>
+            <option value="selected">Tanggal Tertentu</option>
+          </select>
+        </div>
+        <div class="filter-field">
+          <label for="booking-date">Pilih Tanggal</label>
+          <input id="booking-date" type="date" class="styled-input" disabled>
+        </div>
+        <div class="filter-field">
+          <label for="booking-status">Status Booking</label>
+          <select id="booking-status" class="styled-select">
+            <option value="semua">Semua Status</option>
+            <option value="menunggu">Menunggu Konfirmasi</option>
+            <option value="diterima">Diterima / Disetujui</option>
+            <option value="dibatalkan">Dibatalkan</option>
+          </select>
+        </div>
+        <div class="filter-field filter-field-grow">
+          <label for="booking-search">Cari Nama atau Kode</label>
+          <div class="search-input-wrap">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input id="booking-search" type="search" class="styled-input" placeholder="Ketik nama pelanggan atau kode BY-...">
+          </div>
+        </div>
+      </div>
+
+      <div class="booking-result-bar">
+        <p class="booking-result-count" id="booking-result-count" aria-live="polite">Memuat data booking…</p>
+      </div>
       <div id="booking-list" class="booking-list"></div>
     </section>
-    <section class="dashboard-panel" id="panel-customers" role="tabpanel" aria-labelledby="tab-customers" hidden>
-      <div class="panel-heading"><div><h2 id="customers-heading">Pelanggan</h2><p>Daftar per booking pelanggan, diurutkan dari permintaan terbaru. Hubungi langsung melalui WhatsApp.</p></div></div>
-      <div id="customer-list" class="customer-list"></div>
-    </section>
+
+    <!-- TAB 3: JADWAL HARIAN & JAM BUKA -->
     <section class="dashboard-panel" id="panel-schedule" role="tabpanel" aria-labelledby="tab-schedule" hidden>
-      <div class="panel-heading"><div><h2>Jadwal harian</h2><p>Tutup atau buka slot 30 menit. Jam yang memiliki booking tidak dapat ditutup.</p></div><div class="panel-filters"><label for="schedule-date">Tanggal</label><input id="schedule-date" type="date"></div></div>
-      <div class="schedule-legend"><span><i class="legend-dot legend-available"></i>Kosong</span><span><i class="legend-dot legend-full"></i>Terisi</span><span><i class="legend-dot legend-pending"></i>Ditutup</span></div>
+      <div class="panel-heading">
+        <div>
+          <h2>Jadwal Slot Harian (30 Menit)</h2>
+          <p>Tutup atau buka slot waktu 30 menit. Slot yang sudah terisi booking tidak dapat ditutup langsung.</p>
+        </div>
+        <div class="panel-filters">
+          <label for="schedule-date" class="schedule-date-label">Pilih Tanggal:</label>
+          <input id="schedule-date" type="date" class="styled-input">
+        </div>
+      </div>
+
+      <div class="schedule-legend">
+        <span class="legend-chip"><i class="legend-dot legend-available"></i> Kosong (Siap Dipesan)</span>
+        <span class="legend-chip"><i class="legend-dot legend-full"></i> Terisi (Ada Reservasi)</span>
+        <span class="legend-chip"><i class="legend-dot legend-pending"></i> Ditutup / Istirahat</span>
+      </div>
+
       <div id="schedule-grid" class="schedule-grid"></div>
+
+      <!-- Weekly Hours Editor -->
       <section class="weekly-hours">
-        <div class="panel-heading"><div><h2>Jam operasional mingguan</h2><p>Atur jam buka dan istirahat setiap hari. Perubahan memengaruhi slot yang bisa dipesan.</p></div></div>
+        <div class="panel-heading">
+          <div>
+            <h2>Jam Operasional Mingguan</h2>
+            <p>Atur jam buka, jam tutup, dan waktu istirahat setiap hari. Perubahan langsung memengaruhi ketersediaan slot publik.</p>
+          </div>
+        </div>
         <form id="weekly-hours-form">
           <div id="weekly-hours-list" class="weekly-hours-list"></div>
           <div id="weekly-hours-error" class="field-error" role="alert" hidden></div>
-          <button class="button button-primary" type="submit">Simpan jam operasional</button>
+          <div class="form-actions-row">
+            <button class="button button-primary" type="submit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+              <span>Simpan Jam Operasional</span>
+            </button>
+          </div>
         </form>
       </section>
     </section>
+
+    <!-- TAB 4: PELANGGAN -->
+    <section class="dashboard-panel" id="panel-customers" role="tabpanel" aria-labelledby="tab-customers" hidden>
+      <div class="panel-heading">
+        <div>
+          <h2 id="customers-heading">Daftar Pelanggan Terdaftar</h2>
+          <p>Daftar per booking pelanggan diurutkan dari permintaan terbaru. Klik tombol untuk chat langsung via WhatsApp dengan pesan otomatis.</p>
+        </div>
+      </div>
+      <div id="customer-list" class="customer-list"></div>
+    </section>
+
+    <!-- TAB 5: LAYANAN & HARGA -->
     <section class="dashboard-panel" id="panel-services" role="tabpanel" aria-labelledby="tab-services" hidden>
-      <div class="panel-heading"><div><h2>Layanan &amp; harga</h2><p>Atur layanan yang tersedia di halaman booking publik.</p></div><button class="button button-primary button-small" id="add-service-button" type="button">Tambah layanan</button></div>
+      <div class="panel-heading">
+        <div>
+          <h2>Katalog Layanan &amp; Tarif</h2>
+          <p>Kelola menu layanan yang dapat dipilih pelanggan di halaman booking publik.</p>
+        </div>
+        <button class="button button-primary button-small" id="add-service-button" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Tambah Layanan Baru</span>
+        </button>
+      </div>
       <div id="service-list" class="service-admin-list"></div>
     </section>
   </main>
+
+  <!-- Modal Dialog: Tambah/Edit Layanan -->
   <dialog id="service-dialog" class="service-dialog">
-    <form id="service-form" method="dialog">
-      <div class="dialog-heading"><h2 id="service-dialog-title">Tambah layanan</h2><button type="button" class="icon-button" id="close-service-dialog" aria-label="Tutup">×</button></div>
+    <form id="service-form" method="dialog" class="service-dialog-form">
+      <div class="dialog-heading">
+        <h2 id="service-dialog-title">Tambah Layanan</h2>
+        <button type="button" class="icon-button dialog-close-btn" id="close-service-dialog" aria-label="Tutup dialog">×</button>
+      </div>
+      
       <input type="hidden" id="service-id">
-      <label for="service-name">Nama layanan</label><input id="service-name" maxlength="80" required>
-      <label for="service-duration">Durasi (menit)</label><input id="service-duration" type="number" min="30" step="30" required>
-      <label for="service-price">Harga (Rupiah)</label><input id="service-price" type="number" min="0" step="1000" required>
+
+      <div class="form-group">
+        <label for="service-name">Nama Layanan</label>
+        <input id="service-name" class="styled-input" maxlength="80" placeholder="Contoh: Potong Rambut + Cuci" required>
+      </div>
+
+      <div class="form-group-row">
+        <div class="form-group">
+          <label for="service-duration">Durasi (Kelipatan 30 Menit)</label>
+          <input id="service-duration" class="styled-input" type="number" min="30" step="30" placeholder="30" required>
+        </div>
+
+        <div class="form-group">
+          <label for="service-price">Harga Layanan (Rp)</label>
+          <input id="service-price" class="styled-input" type="number" min="0" step="1000" placeholder="35000" required>
+        </div>
+      </div>
+
       <div id="service-form-error" class="field-error" role="alert" hidden></div>
-      <div class="dialog-actions"><button class="button button-secondary" type="button" id="cancel-service">Batal</button><button class="button button-primary" type="submit">Simpan layanan</button></div>
+      
+      <div class="dialog-actions">
+        <button class="button button-secondary" type="button" id="cancel-service">Batal</button>
+        <button class="button button-primary" type="submit">Simpan Layanan</button>
+      </div>
     </form>
   </dialog>
+
+  <!-- Supabase & Client SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
-  <script src="../js/supabase-client.js"></script><script src="../js/api.js"></script><script src="../js/utils.js"></script><script src="../js/dashboard.js"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/dashboard.js"></script>
 </body>
 </html>

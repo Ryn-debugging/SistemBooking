@@ -13,17 +13,59 @@
   async function initialize() {
     ui.applyProductName();
     try {
+      var urlParams = new URLSearchParams(window.location.search);
+      var switchParam = urlParams.get("mitra") || urlParams.get("demo");
+
       session = await api.getSesiMitra();
-      if (!session) {
-        window.location.href = "login.html";
-        return;
+
+      if (switchParam) {
+        var store = api.getDemoStore ? api.getDemoStore() : null;
+        var found = store && store.mitra && store.mitra.find(function (m) {
+          return m.slug === switchParam || m.id === switchParam;
+        });
+        if (found) {
+          session = Object.assign({}, found);
+          try { localStorage.setItem("namaproduk_demo_session_v1", JSON.stringify(session)); } catch (e) {}
+          sessionStorage.removeItem("mitra_logged_out");
+        }
       }
+
+      if (!session) {
+        var isLoggedOut = sessionStorage.getItem("mitra_logged_out") === "1";
+        if (!isLoggedOut) {
+          var store = api.getDemoStore ? api.getDemoStore() : null;
+          var defaultMitra = (store && store.mitra && store.mitra[0]) || {
+            id: "mitra-rapi",
+            slug: "barbershop-rapi",
+            nama: "Barbershop Rapi",
+            kategori: "Barbershop",
+            alamat: "Jl. Melati No. 12, Bandung",
+            telepon: "6285793830821",
+            jamMulai: "09:00",
+            jamSelesai: "17:00",
+            email: "rapi@demo.id",
+            password: "demo123"
+          };
+          session = Object.assign({}, defaultMitra);
+          try { localStorage.setItem("namaproduk_demo_session_v1", JSON.stringify(session)); } catch (e) {}
+        } else {
+          window.location.href = "login.html";
+          return;
+        }
+      }
+
       ui.setPageBrand(session.nama, session.nama + " | Dashboard Mitra — " + ui.PRODUCT_NAME);
-      document.getElementById("dashboard-business-name").textContent =
-        session.nama;
+      document.getElementById("dashboard-business-name").textContent = session.nama;
+
+      // Update partner switcher active states
+      document.querySelectorAll("[data-switch-slug]").forEach(function (btn) {
+        btn.classList.toggle("is-active", btn.getAttribute("data-switch-slug") === session.slug);
+      });
+
       var bookingLink = document.getElementById("public-booking-link");
-      bookingLink.href =
-        "../booking.html?mitra=" + encodeURIComponent(session.slug);
+      if (bookingLink) {
+        bookingLink.href = "../booking.html?mitra=" + encodeURIComponent(session.slug);
+      }
       await renderAdminContactLink();
       document.getElementById("booking-date").value = today;
       document.getElementById("schedule-date").value = today;
@@ -61,6 +103,7 @@
       .getElementById("logout-button")
       .addEventListener("click", async function () {
         try {
+          sessionStorage.setItem("mitra_logged_out", "1");
           await api.unsubscribeDashboardRealtime(realtimeChannel);
           await api.logoutMitra();
           window.location.href = "login.html";
@@ -68,6 +111,18 @@
           showError(error.message || "Tidak dapat keluar. Silakan coba lagi.");
         }
       });
+    document.querySelectorAll("[data-switch-slug]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var slug = btn.getAttribute("data-switch-slug");
+        var store = api.getDemoStore ? api.getDemoStore() : null;
+        var found = store && store.mitra && store.mitra.find(function (m) { return m.slug === slug; });
+        if (found) {
+          try { localStorage.setItem("namaproduk_demo_session_v1", JSON.stringify(found)); } catch (e) {}
+          sessionStorage.removeItem("mitra_logged_out");
+          window.location.href = "dashboard.html?mitra=" + encodeURIComponent(slug);
+        }
+      });
+    });
     document.querySelectorAll(".tab-button").forEach(function (button) {
       button.addEventListener("click", function () {
         activateTab(button.dataset.tab);
