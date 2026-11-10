@@ -1,50 +1,83 @@
-/* BookingYukk! — Soft Periwinkle Theme
+/* BookingYukk! — Modern Fresh Green Gradient Theme ("Hijau Gradasi")
    Dimuat setelah style.css / booking.css / dashboard.css.
-   Hanya mengubah tampilan (token warna, layout hero, bentuk tombol); tidak menyentuh logika. */
+   Mengadopsi identitas logo BookingYukk! hijau gradasi (emerald to vibrant lime/spring green).
+   Hanya mengubah tampilan visual (token warna, hero gradient, tombol pill, badge); fungsi & logika tetap utuh. */
 
 :root {
-  --color-primary: #4C5CA6;
-  --color-primary-hover: #3C4A8C;
-  --color-primary-light: #6676BD;
-  --color-primary-soft: #EDF0FA;
+  --color-primary: #065F46;
+  --color-primary-hover: #064E3B;
+  --color-primary-light: #059669;
+  --color-primary-soft: #ECFDF5;
 
-  --color-secondary: #8A9CDB;
-  --color-secondary-hover: #7589CF;
-  --color-secondary-dark: #3C4A8C;
-  --color-secondary-soft: #E8ECF9;
+  --color-secondary: #10B981;
+  --color-secondary-hover: #059669;
+  --color-secondary-dark: #064E3B;
+  --color-secondary-soft: #D1FAE5;
 
-  --color-bg: #F5F6FC;
+  --color-bg: #F6FAF7;
   --color-surface: #FFFFFF;
-  --color-surface-muted: #F9FAFE;
+  --color-surface-muted: #F9FCFA;
 
-  --color-text: #1E2342;
-  --color-muted: #6B7192;
-  --color-border: #E2E6F4;
-  --color-border-strong: #CBD2EA;
+  --color-text: #14291F;
+  --color-muted: #526A5E;
+  --color-border: #E1EFE7;
+  --color-border-strong: #C6E1D2;
 
-  --color-accent: #4C5CA6;
-  --color-accent-hover: #3C4A8C;
-  --color-accent-soft: #EDF0FA;
-  --color-focus: #8A9CDB;
+  --color-accent: #10B981;
+  --color-accent-hover: #059669;
+  --color-accent-soft: #ECFDF5;
+  --color-focus: #10B981;
 
   --radius-sm: 12px;
   --radius: 18px;
   --radius-lg: 24px;
 
-  --shadow-sm: 0 2px 8px rgba(76, 92, 166, 0.07);
-  --shadow-md: 0 10px 28px rgba(76, 92, 166, 0.10);
-  --shadow-lg: 0 20px 48px rgba(76, 92, 166, 0.14);
+  --shadow-sm: 0 2px 8px rgba(6, 78, 59, 0.06);
+  --shadow-md: 0 10px 28px rgba(6, 78, 59, 0.10);
+  --shadow-lg: 0 20px 48px rgba(6, 78, 59, 0.14);
 }
 
 body {
   background:
-    radial-gradient(900px 480px at 8% -6%, rgba(138, 156, 219, 0.22), transparent 62%),
-    radial-gradient(760px 420px at 100% 30%, rgba(138, 156, 219, 0.14), transparent 60%),
+    radial-gradient(900px 480px at 8% -6%, rgba(34, 197, 94, 0.14), transparent 62%),
+    radial-gradient(760px 420px at 100% 30%, rgba(16, 185, 129, 0.11), transparent 60%),
     var(--color-bg);
   background-attachment: fixed;
 }
 
-/* ---------- Buttons: pill, seperti referensi ---------- */
+/* ---------- Hilangkan '-' pada kalimat utama, hero kicker, dan eyebrow ---------- */
+.hero-kicker::before,
+.eyebrow::before {
+  display: none !important;
+  content: none !important;
+}
+
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  color: #FFFFFF;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  color: #059669;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- Buttons: pill modern dengan gradasi hijau ---------- */
 .button,
 .button-small {
   border-radius: 999px;
@@ -52,21 +85,29 @@ body {
 
 .button-primary,
 .button-gold {
-  background: var(--color-primary);
+  background: linear-gradient(135deg, #059669 0%, #10B981 50%, #22C55E 100%);
   color: #FFFFFF;
-  box-shadow: 0 8px 20px rgba(76, 92, 166, 0.28);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.30);
+  border: 0;
 }
 
 .button-primary:hover:not(:disabled),
 .button-gold:hover:not(:disabled) {
-  background: var(--color-primary-hover);
+  background: linear-gradient(135deg, #047857 0%, #059669 50%, #16A34A 100%);
   color: #FFFFFF;
-  box-shadow: 0 10px 24px rgba(76, 92, 166, 0.34);
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.38);
 }
 
 .button-secondary {
   background: #FFFFFF;
   border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.button-secondary:hover:not(:disabled) {
+  background: var(--color-primary-soft);
+  border-color: var(--color-secondary);
+  color: var(--color-primary);
 }
 
 .button-ghost-light {
@@ -80,15 +121,17 @@ body {
   color: #FFFFFF;
 }
 
-/* ---------- Header: terang, menu teks sederhana ---------- */
+/* ---------- Header: bersih, transparan blur, brand green accent ---------- */
 .site-header,
 .site-header--navy {
-  background: rgba(245, 246, 252, 0.82);
+  background: rgba(246, 250, 247, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 0;
 }
 
 .site-header.is-scrolled {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   box-shadow: var(--shadow-sm);
 }
 
@@ -101,7 +144,7 @@ body {
 .brand-mark {
   background: #FFFFFF;
   border: 1px solid var(--color-border);
-  box-shadow: 0 6px 16px rgba(76, 92, 166, 0.16);
+  box-shadow: 0 6px 16px rgba(6, 78, 59, 0.12);
 }
 
 .site-header--navy .site-nav a,
@@ -114,12 +157,12 @@ body {
 .site-header--navy .site-nav a.is-active,
 .site-nav a:hover,
 .site-nav a.is-active {
-  color: var(--color-primary);
+  color: var(--color-primary-light);
 }
 
 .site-nav a.is-active::after {
-  background: var(--color-text);
-  height: 1.5px;
+  background: linear-gradient(90deg, #059669, #10B981);
+  height: 2px;
 }
 
 .site-header--navy .mobile-menu-toggle,
@@ -143,9 +186,10 @@ body {
 .site-header--navy .mobile-nav-links a:hover,
 .mobile-nav-links a:hover {
   background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
 
-/* ---------- Hero: banner bulat periwinkle, ikon BookingYukk! menggantikan karakter ---------- */
+/* ---------- Hero Section: Hijau Gradasi Dinamis (Emerald -> Mint -> Lime) ---------- */
 .hero-banner {
   background: transparent;
   color: var(--color-text);
@@ -164,9 +208,9 @@ body {
   padding: 56px 56px 56px 64px;
   border-radius: 28px;
   background:
-    radial-gradient(520px 340px at 0% 108%, rgba(255, 255, 255, 0.28), transparent 70%),
-    linear-gradient(120deg, #8394D6 0%, #92A3E0 55%, #A3B2E8 100%);
-  box-shadow: var(--shadow-md);
+    radial-gradient(520px 340px at 0% 108%, rgba(255, 255, 255, 0.22), transparent 70%),
+    linear-gradient(130deg, #064E3B 0%, #065F46 25%, #059669 60%, #10B981 85%, #22C55E 100%);
+  box-shadow: 0 20px 48px rgba(6, 78, 59, 0.22);
 }
 
 .hero-grid::before,
@@ -183,7 +227,7 @@ body {
   height: 520px;
   left: -180px;
   bottom: -300px;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .hero-grid::after {
@@ -191,37 +235,32 @@ body {
   height: 420px;
   right: -90px;
   top: -150px;
-  background: rgba(255, 255, 255, 0.16);
-}
-
-.hero-kicker {
-  color: #FFFFFF;
-  opacity: 0.92;
-}
-
-.hero-kicker::before {
-  background: #FFFFFF;
+  background: rgba(163, 230, 53, 0.16);
 }
 
 .hero-content h1 {
   color: #FFFFFF;
   font-size: clamp(2rem, 3.8vw, 3.05rem);
-  text-shadow: 0 1px 8px rgba(60, 74, 140, 0.14);
+  text-shadow: 0 2px 10px rgba(6, 78, 59, 0.25);
+  line-height: 1.18;
 }
 
 .hero-copy {
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 1.05rem;
 }
 
 .hero-content .button-gold {
   background: #FFFFFF;
-  color: var(--color-primary-hover);
-  box-shadow: 0 10px 24px rgba(60, 74, 140, 0.22);
+  color: #065F46;
+  font-weight: 700;
+  box-shadow: 0 10px 24px rgba(6, 78, 59, 0.25);
 }
 
 .hero-content .button-gold:hover:not(:disabled) {
-  background: var(--color-primary-soft);
-  color: var(--color-primary-hover);
+  background: #ECFDF5;
+  color: #047857;
+  transform: translateY(-1px);
 }
 
 .hero-content .button-ghost-light {
@@ -244,7 +283,7 @@ body {
 }
 
 .hero-metric span {
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .hero-visual {
@@ -261,18 +300,18 @@ body {
   width: min(100%, 330px);
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 28%, #FFFFFF 0%, #F1F4FE 62%, #E1E7FA 100%);
+  background: radial-gradient(circle at 35% 28%, #FFFFFF 0%, #F0FDF4 60%, #DCFCE7 100%);
   box-shadow:
-    0 0 0 14px rgba(255, 255, 255, 0.22),
+    0 0 0 14px rgba(255, 255, 255, 0.24),
     0 0 0 34px rgba(255, 255, 255, 0.12),
-    0 26px 56px rgba(60, 74, 140, 0.30);
+    0 26px 56px rgba(6, 78, 59, 0.28);
   animation: hero-float 6s ease-in-out infinite;
 }
 
 .hero-logo-orb img {
   width: 78%;
   height: auto;
-  filter: drop-shadow(0 10px 18px rgba(12, 63, 168, 0.22));
+  filter: drop-shadow(0 12px 20px rgba(5, 150, 105, 0.32));
 }
 
 @keyframes hero-float {
@@ -310,11 +349,11 @@ body {
 }
 
 .hero-floating-card .hero-floating-badge {
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
+  background: linear-gradient(135deg, #059669 0%, #10B981 50%, #22C55E 100%);
+  color: #FFFFFF;
 }
 
-/* ---------- Search dock & kartu: lebih lembut ---------- */
+/* ---------- Search dock & kartu: clean soft surfaces ---------- */
 .search-dock,
 .business-card,
 .summary-card,
@@ -324,59 +363,123 @@ body {
 
 .search-dock {
   border-radius: 26px;
+  box-shadow: var(--shadow-lg);
 }
 
 .category-pill-tab {
   border-radius: 999px;
-  background: var(--color-secondary-soft);
+  background: #E8F5EE;
   border-color: transparent;
-  color: var(--color-primary-hover);
+  color: #065F46;
+  font-weight: 600;
 }
 
 .category-pill-tab:hover {
-  background: #DCE2F6;
+  background: #D1FAE5;
   border-color: transparent;
+  color: #047857;
 }
 
 .category-pill-tab.is-active {
-  background: var(--color-primary);
+  background: linear-gradient(135deg, #059669 0%, #10B981 100%);
   color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.28);
 }
 
-/* ---------- Dashboard mitra: sidebar periwinkle lembut ---------- */
+/* ---------- Dashboard mitra: sidebar emerald ke forest green ---------- */
 .admin-sidebar {
-  background: linear-gradient(180deg, #7F91D3 0%, #6B7DC6 100%);
+  background: linear-gradient(180deg, #065F46 0%, #043827 100%);
   border-right: 0;
 }
 
 .admin-topbar {
-  background: rgba(245, 246, 252, 0.88);
+  background: rgba(246, 250, 247, 0.88);
 }
 
-/* ---------- Footer & banner mitra ---------- */
+/* ---------- Footer & banner mitra: Hijau Gradasi ---------- */
 .site-footer {
-  background: #3C4A8C;
+  background: #042E20;
+  color: #FFFFFF;
   border-top: 0;
 }
 
+.site-footer a {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.site-footer a:hover {
+  color: #34D399;
+}
+
 .mitra-cta-banner {
-  background: linear-gradient(120deg, #8394D6 0%, #A3B2E8 100%);
+  background: linear-gradient(130deg, #064E3B 0%, #065F46 25%, #059669 60%, #10B981 85%, #22C55E 100%);
   border-radius: 28px;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 16px 40px rgba(6, 78, 59, 0.20);
 }
 
 .mitra-cta-banner .button-gold {
   background: #FFFFFF;
-  color: var(--color-primary-hover);
+  color: #065F46;
 }
 
 .mitra-cta-banner .button-gold:hover:not(:disabled) {
-  background: var(--color-primary-soft);
-  color: var(--color-primary-hover);
+  background: #ECFDF5;
+  color: #047857;
 }
 
 .author-avatar {
+  background: linear-gradient(135deg, #059669 0%, #10B981 100%);
   color: #FFFFFF;
+}
+
+/* ---------- Rating, Badges & Stepper ---------- */
+.media-badge--gold {
+  background: #FFFFFF;
+  color: #065F46;
+  box-shadow: 0 4px 12px rgba(6, 78, 59, 0.16);
+}
+
+.media-badge--navy {
+  background: #065F46;
+  color: #FFFFFF;
+}
+
+.stepper-item.is-active .stepper-circle {
+  border-color: #10B981;
+  color: #065F46;
+}
+
+.stepper-item.is-done .stepper-circle {
+  background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+  border-color: #10B981;
+  color: #FFFFFF;
+}
+
+.stepper-line.is-filled {
+  background: linear-gradient(90deg, #059669, #10B981);
+}
+
+.footer-socials a,
+.footer-socials a:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: transparent;
+  color: #FFFFFF;
+}
+
+.footer-socials a:hover {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.tab-button.is-active .tab-badge-count {
+  background: #FFFFFF;
+  color: #065F46;
+}
+
+.featured-card-price strong,
+.service-price-tag,
+.business-card-price strong {
+  color: #059669;
 }
 
 @media (max-width: 960px) {
@@ -395,24 +498,4 @@ body {
     margin-top: -26px;
     width: 100%;
   }
-}
-
-/* Kontras badge: secondary periwinkle terlalu terang untuk teks primary */
-.media-badge--gold {
-  background: #FFFFFF;
-  color: var(--color-primary);
-  box-shadow: 0 4px 12px rgba(76, 92, 166, 0.18);
-}
-
-.stepper-item.is-done .stepper-circle,
-.footer-socials a,
-.footer-socials a:hover {
-  background: var(--color-secondary-soft);
-  border-color: var(--color-secondary-soft);
-  color: var(--color-primary);
-}
-
-.tab-button.is-active .tab-badge-count {
-  background: #FFFFFF;
-  color: var(--color-primary);
 }
